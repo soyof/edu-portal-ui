@@ -1,0 +1,251 @@
+// DNA双螺旋动画效果
+@keyframes dnaRotate {
+  0% {
+    transform: rotate(0deg) translateX(10px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(10px) rotate(-360deg);
+  }
+}
+
+@keyframes dnaGlow {
+  0% {
+    filter: drop-shadow(0 0 2px var(--primary-color));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px var(--accent-color));
+  }
+  100% {
+    filter: drop-shadow(0 0 2px var(--primary-color));
+  }
+}
+
+// 分子链过渡动画
+@keyframes moleculeChain {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+}
+
+// 粒子背景动画
+@keyframes particleDrift {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  25% {
+    transform: translateX(10px) translateY(-10px);
+  }
+  50% {
+    transform: translateX(20px) translateY(0);
+  }
+  75% {
+    transform: translateX(10px) translateY(10px);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}
+
+@keyframes particleFade {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+// 霓虹脉冲效果
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 5px var(--primary-color),
+                0 0 10px var(--primary-color),
+                0 0 20px var(--primary-color);
+  }
+  50% {
+    box-shadow: 0 0 10px var(--primary-color),
+                0 0 20px var(--primary-color),
+                0 0 40px var(--primary-color);
+  }
+  100% {
+    box-shadow: 0 0 5px var(--primary-color),
+                0 0 10px var(--primary-color),
+                0 0 20px var(--primary-color);
+  }
+}
+
+// 呼吸霓虹文字效果
+@keyframes textNeonGlow {
+  0%, 100% {
+    text-shadow: 0 0 5px var(--primary-color),
+                 0 0 10px var(--primary-color),
+                 0 0 15px var(--primary-color);
+  }
+  50% {
+    text-shadow: 0 0 10px var(--primary-color),
+                 0 0 20px var(--primary-color),
+                 0 0 30px var(--primary-color);
+  }
+}
+
+// 科技感数据流动画
+@keyframes dataFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+// 分子旋转动画
+@keyframes moleculeRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// 渐入效果
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// 滑入效果
+@keyframes slideInUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// 缩放效果
+@keyframes zoomIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// 流体动画
+@keyframes fluidAnimation {
+  0% {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+  25% {
+    border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
+  }
+  50% {
+    border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%;
+  }
+  75% {
+    border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%;
+  }
+  100% {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  }
+}
+
+// 动画工具类
+.fadeIn {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.slideInUp {
+  animation: slideInUp 0.8s ease forwards;
+}
+
+.slideInLeft {
+  animation: slideInLeft 0.8s ease forwards;
+}
+
+.slideInRight {
+  animation: slideInRight 0.8s ease forwards;
+}
+
+.zoomIn {
+  animation: zoomIn 0.8s ease forwards;
+}
+
+.neonPulse {
+  animation: neonPulse 2s infinite;
+}
+
+.textGlow {
+  animation: textNeonGlow 2s infinite;
+}
+
+.moleculeRotate {
+  animation: moleculeRotate 10s linear infinite;
+}
+
+.dataFlow {
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
+  background-size: 400% 400%;
+  animation: dataFlow 15s ease infinite;
+}
+
+.dnaRotate {
+  animation: dnaRotate 10s linear infinite;
+}
+
+.dnaGlow {
+  animation: dnaGlow 3s ease-in-out infinite;
+}
+
+.particleDrift {
+  animation: particleDrift 10s ease-in-out infinite, particleFade 5s ease-in-out infinite;
+}
+
+.fluidAnimation {
+  animation: fluidAnimation 10s ease-in-out infinite;
+} 

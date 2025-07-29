@@ -1,0 +1,250 @@
+// Element Plus 主题定制
+
+// 默认主题颜色覆盖
+:root {
+  // 主要颜色
+  --el-color-primary: @primary-color;
+  --el-color-primary-light-3: @secondary-color;
+  --el-color-primary-light-5: lighten(@primary-color, 20%);
+  --el-color-primary-light-7: lighten(@primary-color, 30%);
+  --el-color-primary-light-9: lighten(@primary-color, 40%);
+  --el-color-primary-dark-2: darken(@primary-color, 10%);
+  
+  // 成功、警告、危险、信息色
+  --el-color-success: #67C23A;
+  --el-color-warning: #E6A23C;
+  --el-color-danger: #F56C6C;
+  --el-color-info: #909399;
+  
+  // 背景颜色
+  --el-bg-color: #ffffff;
+  --el-bg-color-page: #f2f3f5;
+  --el-bg-color-overlay: #ffffff;
+  
+  // 边框颜色
+  --el-border-color: #DCDFE6;
+  --el-border-color-light: #E4E7ED;
+  --el-border-color-lighter: #EBEEF5;
+  --el-border-color-extra-light: #F2F6FC;
+  
+  // 文本颜色
+  --el-text-color-primary: #303133;
+  --el-text-color-regular: #606266;
+  --el-text-color-secondary: #909399;
+  --el-text-color-placeholder: #C0C4CC;
+  --el-text-color-disabled: #C0C4CC;
+  
+  // 遮罩颜色
+  --el-mask-color: rgba(255, 255, 255, 0.9);
+  --el-mask-color-extra-light: rgba(255, 255, 255, 0.3);
+}
+
+// 暗黑模式颜色覆盖
+.dark-mode {
+  // 主要颜色
+  --el-color-primary: @dark-primary-color;
+  --el-color-primary-light-3: lighten(@dark-primary-color, 10%);
+  --el-color-primary-light-5: lighten(@dark-primary-color, 20%);
+  --el-color-primary-light-7: lighten(@dark-primary-color, 30%);
+  --el-color-primary-light-9: lighten(@dark-primary-color, 40%);
+  --el-color-primary-dark-2: darken(@dark-primary-color, 10%);
+  
+  // 背景颜色
+  --el-bg-color: #141414;
+  --el-bg-color-page: #0a0a0a;
+  --el-bg-color-overlay: #1d1e1f;
+  
+  // 边框颜色
+  --el-border-color: #4c4d4f;
+  --el-border-color-light: #414243;
+  --el-border-color-lighter: #363637;
+  --el-border-color-extra-light: #2e2e2f;
+  
+  // 文本颜色
+  --el-text-color-primary: #E5EAF3;
+  --el-text-color-regular: #CFD3DC;
+  --el-text-color-secondary: #A3A6AD;
+  --el-text-color-placeholder: #8D9095;
+  --el-text-color-disabled: #6C6E72;
+  
+  // 遮罩颜色
+  --el-mask-color: rgba(0, 0, 0, 0.8);
+  --el-mask-color-extra-light: rgba(0, 0, 0, 0.3);
+}
+
+// 紫色主题的 Element Plus 组件定制
+.purple-theme {
+  // 主要颜色
+  --el-color-primary: @purple-theme;
+  --el-color-primary-light-3: @purple-theme-light;
+  --el-color-primary-light-5: lighten(@purple-theme, 20%);
+  --el-color-primary-light-7: lighten(@purple-theme, 30%);
+  --el-color-primary-light-9: lighten(@purple-theme, 40%);
+  --el-color-primary-dark-2: @purple-theme-dark;
+}
+
+// 紫色主题 + 暗黑模式
+.purple-theme.dark-mode {
+  --el-color-primary: @purple-theme-light;
+  --el-color-primary-light-3: lighten(@purple-theme-light, 10%);
+  --el-color-primary-light-5: lighten(@purple-theme-light, 20%);
+  --el-color-primary-light-7: lighten(@purple-theme-light, 30%);
+  --el-color-primary-light-9: lighten(@purple-theme-light, 40%);
+  --el-color-primary-dark-2: @purple-theme;
+}
+
+// 为主题颜色定义 RGB 变量，用于透明度调整
+:root {
+  --el-color-primary-rgb: 0, 184, 169; // @primary-color 的 RGB 值
+}
+
+.dark-mode {
+  --el-color-primary-rgb: 0, 224, 199; // @dark-primary-color 的 RGB 值
+}
+
+.purple-theme {
+  --el-color-primary-rgb: 70, 38, 125; // @purple-theme 的 RGB 值
+}
+
+.purple-theme.dark-mode {
+  --el-color-primary-rgb: 105, 56, 181; // @purple-theme-light 的 RGB 值
+}
+
+// 具体组件覆盖样式
+// 按钮
+.el-button--primary {
+  background-color: var(--el-color-primary);
+  border-color: var(--el-color-primary);
+  
+  &:hover, &:focus {
+    background-color: var(--el-color-primary-light-3);
+    border-color: var(--el-color-primary-light-3);
+  }
+  
+  &:active {
+    background-color: var(--el-color-primary-dark-2);
+    border-color: var(--el-color-primary-dark-2);
+  }
+}
+
+// 下拉菜单 - 全局样式覆盖
+.el-dropdown-menu {
+  .el-dropdown-menu__item:focus, .el-dropdown-menu__item:not(.is-disabled):hover {
+    // 使用更加柔和的背景色和透明度
+    background-color: rgba(var(--el-color-primary-rgb), 0.08) !important;
+    color: var(--el-color-primary);
+  }
+}
+
+// 主题色选择下拉菜单特殊处理
+.theme-color-dropdown {
+  .el-dropdown-menu__item {
+    &:focus, &:hover {
+      background-color: rgba(0, 0, 0, 0.04) !important;
+      
+      // 紫色主题选项特殊处理
+      .color-option {
+        .purple-theme + span {
+          color: @purple-theme;
+        }
+      }
+    }
+  }
+}
+
+.dark-mode {
+  .theme-color-dropdown {
+    .el-dropdown-menu__item {
+      &:focus, &:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+      }
+    }
+  }
+}
+
+// 表单控件
+.el-input__wrapper.is-focus, .el-textarea__wrapper.is-focus {
+  box-shadow: 0 0 0 1px var(--el-color-primary) inset !important;
+}
+
+// 分页控件
+.el-pagination {
+  .el-pager li.is-active {
+    background-color: var(--el-color-primary);
+    color: #ffffff;
+  }
+  
+  .el-pager li:hover {
+    color: var(--el-color-primary);
+  }
+  
+  button:hover {
+    color: var(--el-color-primary);
+  }
+}
+
+// 选择器
+.el-select:hover .el-input__wrapper {
+  box-shadow: 0 0 0 1px var(--el-color-primary) inset !important;
+}
+
+.el-select-dropdown__item.selected {
+  color: var(--el-color-primary);
+}
+
+// 下拉选择器悬浮样式优化
+.el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+  background-color: rgba(var(--el-color-primary-rgb), 0.08) !important;
+}
+
+// 选项卡
+.el-tabs__active-bar {
+  background-color: var(--el-color-primary);
+}
+
+.el-tabs__item.is-active {
+  color: var(--el-color-primary);
+}
+
+.el-tabs__item:hover {
+  color: var(--el-color-primary-light-3);
+}
+
+// 复选框
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: var(--el-color-primary);
+  border-color: var(--el-color-primary);
+}
+
+// 单选框
+.el-radio__input.is-checked .el-radio__inner {
+  background-color: var(--el-color-primary);
+  border-color: var(--el-color-primary);
+}
+
+// 开关
+.el-switch.is-checked .el-switch__core {
+  background-color: var(--el-color-primary);
+  border-color: var(--el-color-primary);
+}
+
+// 轮播图
+.el-carousel__indicator:hover button {
+  background-color: var(--el-color-primary-light-3);
+}
+
+.el-carousel__indicator.is-active button {
+  background-color: var(--el-color-primary);
+}
+
+// 加载遮罩
+.el-loading-spinner .circular .path {
+  stroke: var(--el-color-primary);
+}
+
+// 标签
+.el-tag--primary {
+  --el-tag-bg-color: var(--el-color-primary-light-9);
+  --el-tag-border-color: var(--el-color-primary-light-5);
+  --el-tag-hover-color: var(--el-color-primary);
+} 
