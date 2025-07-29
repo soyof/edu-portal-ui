@@ -34,7 +34,11 @@ export default {
     partners: '合作伙伴',
     teamIntro: '团队简介',
     learnMore: '了解更多',
-    viewTeamMembers: '了解团队成员'
+    viewTeamMembers: '了解团队成员',
+    announcements: '公告通知',
+    viewAllAnnouncements: '查看全部公告',
+    noAnnouncements: '暂无公告',
+    new: '新'
   },
   about: {
     title: '关于我们',
@@ -87,3 +91,4 @@ export default {
     subscribe: '订阅我们的新闻邮件'
   }
 } 
+ 

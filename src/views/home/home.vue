@@ -24,6 +24,33 @@
       </div>
     </section>
     
+    <!-- 公告通知区域 -->
+    <section class="announcements-section">
+      <div class="container">
+        <h2 class="section-title tech-line">{{ $t('home.announcements') }}</h2>
+        <div class="announcements-container">
+          <div v-if="loadingAnnouncements" class="loading-container">
+            <el-skeleton :rows="3" animated />
+          </div>
+          <template v-else-if="announcements.length > 0">
+            <announcement-item 
+              v-for="announcement in announcements" 
+              :key="announcement.id" 
+              :announcement="announcement" 
+            />
+          </template>
+          <div v-else class="empty-announcements">
+            <el-empty :description="$t('home.noAnnouncements')" />
+          </div>
+        </div>
+        <div class="view-all-container">
+          <view-more-button @click="$router.push('/news')">
+            {{ $t('home.viewAllAnnouncements') }}
+          </view-more-button>
+        </div>
+      </div>
+    </section>
+    
     <!-- 团队简介区域 -->
     <section class="team-intro-section">
       <div class="container">
@@ -144,9 +171,12 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import ViewMoreButton from '../../components/common/viewMoreButton.vue'
 import ViewDetailsButton from '../../components/common/viewDetailsButton.vue'
+import AnnouncementItem from '../../components/common/announcementItem.vue'
 import { UserFilled } from '@element-plus/icons-vue'
 import { useI18n } from 'vue-i18n'
 import { useThemeStore } from '../../store'
+import { getAnnouncements } from '../../api'
+import type { Announcement } from '../../api'
 
 // 注册GSAP插件
 gsap.registerPlugin(ScrollTrigger)
@@ -177,6 +207,23 @@ let camera: THREE.PerspectiveCamera | null = null
 let particlesMesh: THREE.Points | null = null
 let particlesMaterial: THREE.PointsMaterial | null = null
 let animationFrameId: number | null = null
+
+// 公告数据
+const announcements = ref<Announcement[]>([])
+const loadingAnnouncements = ref(true)
+
+// 获取公告数据
+const fetchAnnouncements = async () => {
+  loadingAnnouncements.value = true
+  try {
+    announcements.value = await getAnnouncements()
+  } catch (error) {
+    console.error('获取公告失败:', error)
+    announcements.value = []
+  } finally {
+    loadingAnnouncements.value = false
+  }
+}
 
 // 模拟数据 - 科研突破
 const researchItems = [
@@ -371,6 +418,18 @@ const initAnimations = () => {
     stagger: 0.3
   })
 
+  // 公告区域动画
+  gsap.from('.announcement-item', {
+    scrollTrigger: {
+      trigger: '.announcements-section',
+      start: 'top 70%',
+    },
+    opacity: 0,
+    y: 20,
+    duration: 0.5,
+    stagger: 0.2
+  })
+
   // 研究区域动画
   gsap.from('.research-card', {
     scrollTrigger: {
@@ -402,6 +461,9 @@ onMounted(() => {
   
   // 初始化动画
   initAnimations()
+
+  // 获取公告数据
+  fetchAnnouncements()
 })
 
 // 获取当前语言
@@ -534,7 +596,7 @@ const currentLanguage = computed(() => locale.value)
   .dna-model {
     width: 100%;
     height: 100%;
-    background-image: url('https://images.unsplash.com/photo-1637858868799-7f26a0640eb6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');
+    background-image: url('../../assets/homePageImg.jpg');
     background-size: cover;
     background-position: center;
     border-radius: var(--border-radius-lg);
@@ -933,5 +995,64 @@ section {
 
 .fadeIn {
   animation: fadeIn 0.8s ease-out forwards;
+}
+
+// 公告通知区域
+.announcements-section {
+  padding: 60px 0;
+  position: relative;
+  background: linear-gradient(to bottom, rgba(247, 247, 255, 0.6), rgba(247, 247, 255, 0.3));
+  
+  .dark-mode & {
+    background: linear-gradient(to bottom, rgba(18, 18, 37, 0.6), rgba(18, 18, 37, 0.3));
+  }
+  
+  .purple-theme & {
+    background: linear-gradient(to bottom, rgba(70, 38, 125, 0.05), rgba(70, 38, 125, 0.02));
+    
+    &::before {
+      background-color: rgba(70, 38, 125, 0.03);
+    }
+  }
+  
+  .purple-theme.dark-mode & {
+    background: linear-gradient(to bottom, rgba(55, 28, 98, 0.1), rgba(55, 28, 98, 0.05));
+  }
+  
+  // 装饰效果
+  &::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background-image: linear-gradient(135deg, transparent 66%, rgba(var(--primary-color-rgb), 0.1) 67%);
+    background-size: 20px 20px;
+  }
+  
+  .section-title {
+    position: relative;
+    margin-bottom: 30px;
+  }
+}
+
+.announcements-container {
+  margin-bottom: 30px;
+}
+
+.loading-container {
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: var(--border-radius-md);
+  
+  .dark-mode & {
+    background-color: rgba(26, 26, 46, 0.5);
+  }
+}
+
+.empty-announcements {
+  padding: 40px 0;
+  text-align: center;
 }
 </style> 

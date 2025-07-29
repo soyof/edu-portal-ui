@@ -34,7 +34,11 @@ export default {
     partners: 'Our Partners',
     teamIntro: 'Team Introduction',
     learnMore: 'Learn More',
-    viewTeamMembers: 'View Team Members'
+    viewTeamMembers: 'View Team Members',
+    announcements: 'Announcements',
+    viewAllAnnouncements: 'View All Announcements',
+    noAnnouncements: 'No announcements at this time',
+    new: 'New'
   },
   about: {
     title: 'About Us',
@@ -87,3 +91,4 @@ export default {
     subscribe: 'Subscribe to Our Newsletter'
   }
 } 
+ 
