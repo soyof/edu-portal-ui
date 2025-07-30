@@ -1,3 +1,7 @@
+<template>
+  <AppLayout />
+</template>
+
 <script setup lang="ts">
 import AppLayout from './components/layout/appLayout.vue'
 import { useThemeStore } from './store'
@@ -10,10 +14,6 @@ onMounted(() => {
   themeStore.initTheme()
 })
 </script>
-
-<template>
-  <app-layout />
-</template>
 
 <style>
 @import './styles/index.less';
