@@ -1,8 +1,8 @@
 <template>
   <div class="home-page">
     <!-- 粒子背景 -->
-    <div class="particle-background" ref="particleContainer"></div>
-    
+    <div ref="particleContainer" class="particle-background"></div>
+
     <!-- 英雄区域 -->
     <section class="hero-section">
       <div class="container">
@@ -19,11 +19,11 @@
           </div>
         </div>
         <div class="hero-visual">
-          <div class="dna-model" ref="dnaModel"></div>
+          <div ref="dnaModel" class="dna-model"></div>
         </div>
       </div>
     </section>
-    
+
     <!-- 公告通知区域 -->
     <section class="announcements-section">
       <div class="container">
@@ -33,10 +33,10 @@
             <el-skeleton :rows="3" animated />
           </div>
           <template v-else-if="announcements.length > 0">
-            <announcement-item 
-              v-for="announcement in announcements" 
-              :key="announcement.id" 
-              :announcement="announcement" 
+            <AnnouncementItem
+              v-for="announcement in announcements"
+              :key="announcement.id"
+              :announcement="announcement"
             />
           </template>
           <div v-else class="empty-announcements">
@@ -44,13 +44,13 @@
           </div>
         </div>
         <div class="view-all-container">
-          <view-more-button @click="$router.push('/news')">
+          <ViewMoreButton @click="$router.push('/news')">
             {{ $t('home.viewAllAnnouncements') }}
-          </view-more-button>
+          </ViewMoreButton>
         </div>
       </div>
     </section>
-    
+
     <!-- 团队简介区域 -->
     <section class="team-intro-section">
       <div class="container">
@@ -75,20 +75,20 @@
               <p>The research has expanded to over ten hidden gene cluster mining projects, including the Ministry of Science and Technology's key synthetic biology projects (Antarctic bacteriology), 863 key projects, National Natural Science Foundation projects, and natural resource protection projects. The group has published more than 180 papers in top synthetic biology journals, including Nature Chemical Biology, Joule, Nature Communications, Energy & Environmental Science, Angewandte Chemie, and Chemical Society Reviews, and has been granted over 30 invention patents.</p>
             </template>
             <div class="team-actions">
-              <view-details-button @click="$router.push('/members')">
+              <ViewDetailsButton @click="$router.push('/members')">
                 {{ $t('home.viewTeamMembers') }}
-              </view-details-button>
+              </ViewDetailsButton>
             </div>
           </div>
         </div>
       </div>
     </section>
-    
+
     <!-- 科研突破区域 -->
     <section class="research-section">
       <div class="container">
         <h2 class="section-title tech-line">{{ $t('home.featuredResearch') }}</h2>
-        
+
         <!-- 轮播组件 -->
         <el-carousel :interval="5000" type="card" height="450px">
           <el-carousel-item v-for="(item, index) in researchItems" :key="index">
@@ -97,27 +97,27 @@
               <div class="research-content">
                 <h3>{{ item.title }}</h3>
                 <p>{{ item.description }}</p>
-                <view-more-button @click="$router.push('/research')">
+                <ViewMoreButton @click="$router.push('/research')">
                   {{ $t('research.viewProject') }}
-                </view-more-button>
+                </ViewMoreButton>
               </div>
             </div>
           </el-carousel-item>
         </el-carousel>
-        
+
         <div class="view-all-container">
-          <view-more-button text="查看项目详情" @click="$router.push('/research')" useGradient />
+          <ViewMoreButton text="查看项目详情" useGradient @click="$router.push('/research')" />
         </div>
       </div>
     </section>
-    
+
     <!-- 最新动态区域 -->
     <section class="news-section">
       <div class="container">
         <h2 class="section-title tech-line">{{ $t('home.latestNews') }}</h2>
         <div class="news-grid">
-          <div 
-            v-for="(news, index) in newsItems" 
+          <div
+            v-for="(news, index) in newsItems"
             :key="index"
             class="news-item glass-effect"
             :class="{ 'fadeIn': true }"
@@ -129,34 +129,34 @@
             </div>
             <h3 class="news-title">{{ news.title }}</h3>
             <p class="news-excerpt">{{ news.excerpt }}</p>
-            <view-more-button @click="$router.push('/news')">
+            <ViewMoreButton @click="$router.push('/news')">
               {{ $t('news.readMore') }}
-            </view-more-button>
+            </ViewMoreButton>
           </div>
         </div>
-        
+
         <div class="view-all-container">
-          <view-more-button text="阅读更多动态" @click="$router.push('/news')" inverse />
+          <ViewMoreButton text="阅读更多动态" inverse @click="$router.push('/news')" />
         </div>
       </div>
     </section>
-    
+
     <!-- 合作伙伴区域 -->
     <section class="partners-section">
       <div class="container">
         <h2 class="section-title tech-line">{{ $t('home.partners') }}</h2>
         <div class="partners-grid">
-          <div 
-            v-for="(partner, index) in partners" 
+          <div
+            v-for="(partner, index) in partners"
             :key="index"
             class="partner-item"
           >
-            <img :src="partner.logo" :alt="partner.name" class="partner-logo" />
+            <img :src="partner.logo" :alt="partner.name" class="partner-logo">
           </div>
         </div>
-        
+
         <div class="view-all-container">
-          <view-more-button text="查看全部合作伙伴" @click="$router.push('/about#partners')" />
+          <ViewMoreButton text="查看全部合作伙伴" @click="$router.push('/about#partners')" />
         </div>
       </div>
     </section>
@@ -189,11 +189,11 @@ const isDarkMode = computed(() => themeStore.isDarkMode)
 // 根据主题计算粒子颜色
 const particleColor = computed(() => {
   // 默认主题颜色 (青绿色)
-  const defaultColor = isDarkMode.value ? 0x00E0C7 : 0x00B8A9;
+  const defaultColor = isDarkMode.value ? 0x00E0C7 : 0x00B8A9
   // 紫色主题颜色
-  const purpleColor = isDarkMode.value ? 0x6938B5 : 0x46267d;
-  
-  return currentTheme.value === 'purple' ? purpleColor : defaultColor;
+  const purpleColor = isDarkMode.value ? 0x6938B5 : 0x46267d
+
+  return currentTheme.value === 'purple' ? purpleColor : defaultColor
 })
 
 // 粒子背景和DNA模型的引用
@@ -213,7 +213,7 @@ const announcements = ref<Announcement[]>([])
 const loadingAnnouncements = ref(true)
 
 // 获取公告数据
-const fetchAnnouncements = async () => {
+const fetchAnnouncements = async() => {
   loadingAnnouncements.value = true
   try {
     announcements.value = await getAnnouncements()
@@ -410,7 +410,7 @@ const initAnimations = () => {
   gsap.from('.section-title', {
     scrollTrigger: {
       trigger: '.section-title',
-      start: 'top 80%',
+      start: 'top 80%'
     },
     opacity: 0,
     y: 30,
@@ -422,7 +422,7 @@ const initAnimations = () => {
   gsap.from('.announcement-item', {
     scrollTrigger: {
       trigger: '.announcements-section',
-      start: 'top 70%',
+      start: 'top 70%'
     },
     opacity: 0,
     y: 20,
@@ -434,18 +434,18 @@ const initAnimations = () => {
   gsap.from('.research-card', {
     scrollTrigger: {
       trigger: '.research-section',
-      start: 'top 70%',
+      start: 'top 70%'
     },
     opacity: 0,
     scale: 0.9,
-    duration: 0.8,
+    duration: 0.8
   })
 
   // 合作伙伴动画
   gsap.from('.partner-item', {
     scrollTrigger: {
       trigger: '.partners-section',
-      start: 'top 80%',
+      start: 'top 80%'
     },
     opacity: 0,
     y: 20,
@@ -458,7 +458,7 @@ const initAnimations = () => {
 onMounted(() => {
   // 初始化粒子背景
   initParticleBackground()
-  
+
   // 初始化动画
   initAnimations()
 
@@ -484,27 +484,27 @@ const currentLanguage = computed(() => locale.value)
   width: 100%;
   height: 100vh;
   z-index: -1;
-  
+
   // 默认主题渐变背景
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
-  
+
   .dark-mode & {
     background: linear-gradient(to bottom, rgba(18, 18, 37, 0), rgba(18, 18, 37, 1));
   }
-  
+
   // 紫色主题渐变背景
   .purple-theme & {
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)), 
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)),
                 radial-gradient(circle at top right, rgba(70, 38, 125, 0.05), transparent 60%),
                 radial-gradient(circle at bottom left, rgba(105, 56, 181, 0.05), transparent 60%);
   }
-  
+
   .purple-theme.dark-mode & {
     background: linear-gradient(to bottom, rgba(18, 18, 37, 0), rgba(18, 18, 37, 1)),
                 radial-gradient(circle at top right, rgba(105, 56, 181, 0.1), transparent 70%),
                 radial-gradient(circle at bottom left, rgba(138, 101, 199, 0.1), transparent 70%);
   }
-  
+
   canvas {
     display: block;
     width: 100%;
@@ -518,13 +518,13 @@ const currentLanguage = computed(() => locale.value)
   display: flex;
   align-items: center;
   padding: 100px 0;
-  
+
   .container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 50px;
     align-items: center;
-    
+
     @media (max-width: @tablet-breakpoint) {
       grid-template-columns: 1fr;
       gap: 30px;
@@ -537,17 +537,17 @@ const currentLanguage = computed(() => locale.value)
     font-size: 3rem;
     margin-bottom: 20px;
     line-height: 1.2;
-    
+
     @media (max-width: @tablet-breakpoint) {
       font-size: 2.5rem;
     }
   }
-  
+
   .hero-subtitle {
     font-size: 1.5rem;
     margin-bottom: 30px;
     opacity: 0.8;
-    
+
     @media (max-width: @tablet-breakpoint) {
       font-size: 1.2rem;
     }
@@ -557,7 +557,7 @@ const currentLanguage = computed(() => locale.value)
 .hero-actions {
   display: flex;
   gap: 20px;
-  
+
   @media (max-width: @mobile-breakpoint) {
     flex-direction: column;
   }
@@ -573,16 +573,16 @@ const currentLanguage = computed(() => locale.value)
     border-radius: var(--border-radius-md);
     font-size: 1rem;
   }
-  
+
   // 文本按钮
   &.el-button--text {
     padding: 0;
-    
+
     .right-icon {
       margin-left: 5px;
       transition: transform 0.3s ease;
     }
-    
+
     &:hover .right-icon {
       transform: translateX(5px);
     }
@@ -592,7 +592,7 @@ const currentLanguage = computed(() => locale.value)
 .hero-visual {
   position: relative;
   height: 400px;
-  
+
   .dna-model {
     width: 100%;
     height: 100%;
@@ -607,7 +607,7 @@ const currentLanguage = computed(() => locale.value)
 // 通用节样式
 section {
   padding: 80px 0;
-  
+
   @media (max-width: @tablet-breakpoint) {
     padding: 60px 0;
   }
@@ -621,7 +621,7 @@ section {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  
+
   @media (max-width: @tablet-breakpoint) {
     font-size: 2rem;
     margin-bottom: 30px;
@@ -631,15 +631,15 @@ section {
 // 科研突破区域
 .research-section {
   background-color: rgba(247, 247, 255, 0.3);
-  
+
   .dark-mode & {
     background-color: rgba(26, 26, 46, 0.3);
   }
-  
+
   .purple-theme & {
     background-color: rgba(70, 38, 125, 0.03);
   }
-  
+
   .purple-theme.dark-mode & {
     background-color: rgba(55, 28, 98, 0.1);
   }
@@ -652,25 +652,25 @@ section {
   overflow: hidden;
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-medium);
-  
+
   .research-image {
     height: 220px;
     background-size: cover;
     background-position: center;
     transition: all 0.5s ease;
   }
-  
+
   .research-content {
     padding: 20px;
     flex: 1;
     display: flex;
     flex-direction: column;
-    
+
     h3 {
       font-size: 1.4rem;
       margin-bottom: 10px;
     }
-    
+
     p {
       font-size: 1rem;
       margin-bottom: 20px;
@@ -678,7 +678,7 @@ section {
       flex: 1;
     }
   }
-  
+
   &:hover {
     .research-image {
       transform: scale(1.05);
@@ -690,7 +690,7 @@ section {
 .news-section {
   position: relative;
   padding: 100px 0;
-  
+
   // 添加装饰性图形元素
   &::before, &::after {
     content: '';
@@ -701,40 +701,40 @@ section {
     background-color: rgba(var(--primary-color-rgb), 0.1);
     z-index: 0;
   }
-  
+
   &::before {
     top: 80px;
     right: 15%;
   }
-  
+
   &::after {
     bottom: 80px;
     left: 15%;
     width: 60px;
     height: 60px;
   }
-  
+
   .dark-mode & {
     background: linear-gradient(rgba(var(--primary-color-rgb), 0.03), rgba(var(--primary-color-rgb), 0.05));
     border-top: 1px solid rgba(var(--primary-color-rgb), 0.15);
     border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.15);
   }
-  
+
   .purple-theme & {
     background: linear-gradient(rgba(70, 38, 125, 0.02), rgba(70, 38, 125, 0.05));
     border-top: 1px solid rgba(70, 38, 125, 0.1);
     border-bottom: 1px solid rgba(70, 38, 125, 0.1);
-    
+
     &::before, &::after {
       background-color: rgba(70, 38, 125, 0.1);
     }
   }
-  
+
   .purple-theme.dark-mode & {
     background: linear-gradient(rgba(105, 56, 181, 0.02), rgba(105, 56, 181, 0.05));
     border-top: 1px solid rgba(105, 56, 181, 0.15);
     border-bottom: 1px solid rgba(105, 56, 181, 0.15);
-    
+
     &::before, &::after {
       background-color: rgba(105, 56, 181, 0.15);
     }
@@ -746,13 +746,13 @@ section {
   .news-section & {
     font-size: 2.6rem;
     margin-bottom: 50px;
-    
+
     &::before {
       height: 2px;
       opacity: 1;
       background: linear-gradient(90deg, transparent, var(--primary-color), transparent) !important;
     }
-    
+
     @media (max-width: @tablet-breakpoint) {
       font-size: 2.2rem;
       margin-bottom: 40px;
@@ -777,17 +777,17 @@ section {
   background: rgba(255, 255, 255, 0.8);
   box-shadow: var(--shadow-medium);
   border: 1px solid rgba(var(--primary-color-rgb), 0.1);
-  
+
   .dark-mode & {
     background: rgba(26, 26, 46, 0.8);
     border: 1px solid rgba(var(--primary-color-rgb), 0.2);
   }
-  
+
   &:hover {
     transform: translateY(-10px);
     box-shadow: var(--shadow-large);
   }
-  
+
   .news-date {
     position: absolute;
     top: -20px;
@@ -800,20 +800,20 @@ section {
     flex-direction: column;
     align-items: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    
+
     .day {
       font-size: 1.4rem;
       font-weight: 700;
       line-height: 1;
     }
-    
+
     .month {
       font-size: 0.85rem;
       font-weight: 600;
       margin-top: 2px;
     }
   }
-  
+
   .news-title {
     margin-top: 30px;
     margin-bottom: 15px;
@@ -821,12 +821,12 @@ section {
     line-height: 1.3;
     font-weight: 700;
     color: var(--dark-color);
-    
+
     .dark-mode & {
       color: rgba(255, 255, 255, 0.95);
     }
   }
-  
+
   .news-excerpt {
     margin-bottom: 25px;
     line-height: 1.6;
@@ -838,15 +838,15 @@ section {
 // 合作伙伴区域
 .partners-section {
   background-color: rgba(247, 247, 255, 0.3);
-  
+
   .dark-mode & {
     background-color: rgba(26, 26, 46, 0.3);
   }
-  
+
   .purple-theme & {
     background-color: rgba(70, 38, 125, 0.03);
   }
-  
+
   .purple-theme.dark-mode & {
     background-color: rgba(55, 28, 98, 0.1);
   }
@@ -863,12 +863,12 @@ section {
   filter: grayscale(100%);
   opacity: 0.6;
   transition: all 0.3s ease;
-  
+
   &:hover {
     filter: grayscale(0%);
     opacity: 1;
   }
-  
+
   .partner-logo {
     max-width: 180px;
     max-height: 80px;
@@ -889,15 +889,15 @@ section {
 .team-intro-section {
   padding: 80px 0;
   position: relative;
-  
+
   .dark-mode & {
     background-color: rgba(26, 26, 46, 0.2);
   }
-  
+
   .purple-theme & {
     background: rgba(70, 38, 125, 0.03);
   }
-  
+
   .dark-mode.purple-theme & {
     background: rgba(55, 28, 98, 0.1);
   }
@@ -909,11 +909,11 @@ section {
   gap: 40px;
   padding: 40px;
   border-radius: var(--border-radius-lg);
-  
+
   @media (max-width: @tablet-breakpoint) {
     grid-template-columns: 1fr;
   }
-  
+
   .team-intro-image {
     .placeholder-image {
       width: 100%;
@@ -924,15 +924,15 @@ section {
       align-items: center;
       justify-content: center;
       position: relative;
-      
+
       .dark-mode & {
         background-color: rgba(30, 30, 50, 0.5); /* Darker background for dark mode */
       }
-      
+
       .purple-theme & {
         background-color: rgba(70, 38, 125, 0.05); /* Slight purple tint for purple theme */
       }
-      
+
       .purple-theme.dark-mode & {
         background-color: rgba(70, 38, 125, 0.2); /* Dark purple for dark mode in purple theme */
       }
@@ -950,7 +950,7 @@ section {
         align-items: center;
         justify-content: center;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        
+
         .el-icon {
           font-size: 36px;
           color: white;
@@ -958,23 +958,23 @@ section {
       }
     }
   }
-  
+
   .team-intro-text {
     p {
       margin-bottom: 20px;
       line-height: 1.8;
       text-align: justify;
-      
+
       &:last-of-type {
         margin-bottom: 30px;
       }
-      
+
       sub {
         font-size: 0.75em;
         vertical-align: sub;
       }
     }
-    
+
     .team-actions {
       margin-top: 30px;
     }
@@ -1002,23 +1002,23 @@ section {
   padding: 60px 0;
   position: relative;
   background: linear-gradient(to bottom, rgba(247, 247, 255, 0.6), rgba(247, 247, 255, 0.3));
-  
+
   .dark-mode & {
     background: linear-gradient(to bottom, rgba(18, 18, 37, 0.6), rgba(18, 18, 37, 0.3));
   }
-  
+
   .purple-theme & {
     background: linear-gradient(to bottom, rgba(70, 38, 125, 0.05), rgba(70, 38, 125, 0.02));
-    
+
     &::before {
       background-color: rgba(70, 38, 125, 0.03);
     }
   }
-  
+
   .purple-theme.dark-mode & {
     background: linear-gradient(to bottom, rgba(55, 28, 98, 0.1), rgba(55, 28, 98, 0.05));
   }
-  
+
   // 装饰效果
   &::before {
     content: '';
@@ -1030,7 +1030,7 @@ section {
     background-image: linear-gradient(135deg, transparent 66%, rgba(var(--primary-color-rgb), 0.1) 67%);
     background-size: 20px 20px;
   }
-  
+
   .section-title {
     position: relative;
     margin-bottom: 30px;
@@ -1045,7 +1045,7 @@ section {
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: var(--border-radius-md);
-  
+
   .dark-mode & {
     background-color: rgba(26, 26, 46, 0.5);
   }
@@ -1055,4 +1055,4 @@ section {
   padding: 40px 0;
   text-align: center;
 }
-</style> 
+</style>
