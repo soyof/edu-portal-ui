@@ -84,11 +84,18 @@ export default {
     application: '申请流程'
   },
   footer: {
-    address: '地址',
-    contact: '联系方式',
-    copyright: '版权所有',
-    links: '快速链接',
-    subscribe: '订阅我们的新闻邮件'
+    instituteDescription: '致力于合成生物学前沿研究，推动生物技术创新与产业化发展。',
+    contactUs: '联系我们',
+    addressValue: '辽宁省沈阳市东北大学浑南校区生命科学与健康学院A330',
+    postalCode: '邮编：110169',
+    emailValue: 'contact@sbri.ac.cn',
+    subscribe: '订阅我们的新闻邮件',
+    emailPlaceholder: '请输入您的邮箱地址',
+    subscribeBtn: '订阅',
+    followUs: '关注我们',
+    copyright: `©2025 ~ ${new Date().getFullYear()} 东北大学合成生物研究所 版权所有`,
+    privacyPolicy: '隐私政策',
+    termsOfUse: '使用条款',
+    accessibility: '无障碍访问'
   }
-} 
- 
+}

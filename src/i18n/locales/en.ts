@@ -84,11 +84,18 @@ export default {
     application: 'Application Process'
   },
   footer: {
-    address: 'Address',
-    contact: 'Contact Information',
-    copyright: 'Copyright',
-    links: 'Quick Links',
-    subscribe: 'Subscribe to Our Newsletter'
+    instituteDescription: 'Dedicated to cutting-edge synthetic biology research, driving biotechnology innovation and industrial development.',
+    contactUs: 'Contact Us',
+    addressValue: 'Room A330, School of Life Science and Health, Northeastern University, Hunnan Campus, Shenyang, Liaoning Province',
+    postalCode: 'Postal Code: 110169',
+    emailValue: 'contact@sbri.ac.cn',
+    subscribe: 'Subscribe to Our Newsletter',
+    emailPlaceholder: 'Enter your email address',
+    subscribeBtn: 'Subscribe',
+    followUs: 'Follow Us',
+    copyright: `© 2025 ~ ${new Date().getFullYear()}  Northeastern University Synthetic Biology Research Institute. All rights reserved.`,
+    privacyPolicy: 'Privacy Policy',
+    termsOfUse: 'Terms of Use',
+    accessibility: 'Accessibility'
   }
-} 
- 
+}

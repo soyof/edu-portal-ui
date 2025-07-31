@@ -1,7 +1,7 @@
 <template>
   <div class="app-layout">
-    <app-header />
-    
+    <AppHeader />
+
     <main class="main-content">
       <!-- 页面过渡效果 -->
       <router-view v-slot="{ Component }">
@@ -10,11 +10,11 @@
         </transition>
       </router-view>
     </main>
-    
-    <app-footer />
-    
+
+    <AppFooter />
+
     <!-- 全局加载指示器 -->
-    <div class="global-loader" v-if="isLoading">
+    <div v-if="isLoading" class="global-loader">
       <div class="loader-inner">
         <span class="dna-loader"></span>
         <p>{{ $t('global.loading') }}</p>
@@ -78,7 +78,7 @@ onMounted(() => {
   align-items: center;
   z-index: 9999;
   backdrop-filter: blur(8px);
-  
+
   .dark-mode & {
     background-color: rgba(26, 26, 46, 0.9);
   }
@@ -86,12 +86,12 @@ onMounted(() => {
 
 .loader-inner {
   text-align: center;
-  
+
   p {
     margin-top: 20px;
     font-size: 1.2rem;
     color: var(--dark-color);
-    
+
     .dark-mode & {
       color: var(--light-color);
     }
@@ -103,14 +103,14 @@ onMounted(() => {
   position: relative;
   width: 80px;
   height: 80px;
-  
+
   &::before, &::after {
     content: '';
     display: block;
     position: absolute;
     border-radius: 50%;
   }
-  
+
   &::before {
     width: 80%;
     height: 80%;
@@ -120,7 +120,7 @@ onMounted(() => {
     left: 10%;
     animation: dnaRotate 2s linear infinite;
   }
-  
+
   &::after {
     width: 60%;
     height: 60%;
@@ -131,4 +131,4 @@ onMounted(() => {
     animation: dnaRotate 2s linear infinite reverse;
   }
 }
-</style> 
+</style>
