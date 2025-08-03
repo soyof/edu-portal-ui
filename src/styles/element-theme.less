@@ -169,17 +169,25 @@
 
 // 分页控件
 .el-pagination {
-  .el-pager li.is-active {
-    background-color: var(--el-color-primary);
-    color: #ffffff;
+  .el-pager li {
+    &.is-active {
+      background-color: var(--el-color-primary);
+      color: #ffffff;
+      border-color: var(--el-color-primary);
+    }
+    
+    &:hover:not(.is-active) {
+      color: var(--el-color-primary);
+      border-color: var(--el-color-primary);
+    }
   }
   
-  .el-pager li:hover {
-    color: var(--el-color-primary);
-  }
-  
-  button:hover {
-    color: var(--el-color-primary);
+  .btn-prev,
+  .btn-next {
+    &:hover:not(:disabled) {
+      color: var(--el-color-primary);
+      border-color: var(--el-color-primary);
+    }
   }
 }
 

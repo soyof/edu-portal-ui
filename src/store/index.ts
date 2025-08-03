@@ -18,7 +18,7 @@ export const useThemeStore = defineStore('theme', {
       if (this.currentTheme === 'purple') {
         document.body.classList.add('purple-theme')
       }
-      
+
       // 同时切换Element Plus的暗黑模式
       // 这会添加或移除html根元素上的dark类
       const htmlEl = document.documentElement
@@ -31,10 +31,10 @@ export const useThemeStore = defineStore('theme', {
     setColorTheme(theme: 'default' | 'purple') {
       this.currentTheme = theme
       localStorage.setItem('colorTheme', theme)
-      
+
       // 移除所有主题类
       document.body.classList.remove('purple-theme')
-      
+
       // 添加新主题类
       if (theme === 'purple') {
         document.body.classList.add('purple-theme')
@@ -43,12 +43,12 @@ export const useThemeStore = defineStore('theme', {
     initTheme() {
       // 设置深色/浅色模式
       document.body.className = this.isDarkMode ? 'dark-mode' : ''
-      
+
       // 设置颜色主题
       if (this.currentTheme === 'purple') {
         document.body.classList.add('purple-theme')
       }
-      
+
       // 同时初始化Element Plus的暗黑模式
       const htmlEl = document.documentElement
       if (this.isDarkMode) {
@@ -68,9 +68,20 @@ export const useLanguageStore = defineStore('language', {
   actions: {
     setLanguage(lang: string) {
       if (lang !== 'zh' && lang !== 'en') return
+      const oldLang = this.currentLanguage
       this.currentLanguage = lang
       localStorage.setItem('locale', lang)
       document.documentElement.className = lang === 'zh' ? 'lang-zh' : ''
+
+      // 触发自定义事件，通知语言变化
+      if (oldLang !== lang) {
+        window.dispatchEvent(new CustomEvent('localeChange', {
+          detail: {
+            newLocale: lang,
+            oldLocale: oldLang
+          }
+        }))
+      }
     }
   }
 })
@@ -96,5 +107,4 @@ export const useAppStore = defineStore('app', {
       this.isScrolled = isScrolled
     }
   }
-}) 
- 
+})

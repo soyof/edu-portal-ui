@@ -14,9 +14,20 @@ const i18n = createI18n({
 
 // 添加语言切换函数
 export function setLocale(locale: 'en' | 'zh') {
+  const oldLocale = i18n.global.locale.value
   i18n.global.locale.value = locale
   localStorage.setItem('locale', locale)
   document.documentElement.className = locale === 'zh' ? 'lang-zh' : ''
+
+  // 触发自定义事件，通知语言变化
+  if (oldLocale !== locale) {
+    window.dispatchEvent(new CustomEvent('localeChange', {
+      detail: {
+        newLocale: locale,
+        oldLocale
+      }
+    }))
+  }
 }
 
-export default i18n 
+export default i18n

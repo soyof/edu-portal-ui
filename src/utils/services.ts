@@ -134,7 +134,6 @@ class Services {
         this.retryCount.delete(requestKey)
 
         const data = response.data
-        console.log(data)
 
         if (response.request.responseType === 'blob') {
           return response

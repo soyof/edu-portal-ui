@@ -48,15 +48,15 @@ const iconColor = computed(() => props.color || 'currentColor')
   justify-content: center;
   height: 44px;
   padding: 0 28px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 1));
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
   border: none;
   border-radius: 4px;
-  color: #333;
+  color: white;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.3);
   white-space: nowrap;
   position: relative;
   overflow: hidden;
@@ -74,7 +74,7 @@ const iconColor = computed(() => props.color || 'currentColor')
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 16px rgba(var(--primary-color-rgb), 0.4);
 
     &::before {
       left: 100%;

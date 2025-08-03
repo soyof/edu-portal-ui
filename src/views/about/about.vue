@@ -84,8 +84,8 @@
             <!-- 卡片底部 -->
             <div class="card-footer">
               <div class="footer-info">
-                <span v-if="profileData.updatedTimes" class="update-time">
-                  最后更新: {{ formatDate(profileData.updatedTimes) }}
+                <span v-if="profileData?.updatedTimes" class="update-time">
+                  {{ $t('about.lastUpdated') }}: {{ formatDate(profileData.updatedTimes) }}
                 </span>
               </div>
               <div class="footer-decoration">
@@ -110,10 +110,10 @@
               <span>!</span>
             </div>
           </div>
-          <h3 class="empty-title">暂无内容</h3>
-          <p class="empty-text">简介信息正在准备中，请稍后再试</p>
+          <h3 class="empty-title">{{ $t('about.noContent') }}</h3>
+          <p class="empty-text">{{ $t('about.contentPreparation') }}</p>
           <button class="retry-btn" @click="fetchProfileData">
-            <span>重新加载</span>
+            <span>{{ $t('global.reload') }}</span>
             <div class="btn-glow"></div>
           </button>
         </div>
@@ -130,8 +130,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import service from '../../utils/services'
+import { ref, onMounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import service from '@/utils/services'
+import { useMultiLang } from '@/hooks/useMultiLang'
 
 // 定义接口返回的数据类型
 interface InstituteProfile {
@@ -145,7 +147,14 @@ interface InstituteProfile {
 
 // 响应式数据
 const loading = ref(true)
-const profileData = ref<InstituteProfile | null>(null)
+const rawProfileData = ref<InstituteProfile | null>(null)
+
+// 多语言处理
+const { multiLangData, setData } = useMultiLang<InstituteProfile>()
+const { locale } = useI18n()
+
+// 获取处理后的数据
+const profileData = computed(() => multiLangData.value)
 
 // 获取粒子样式
 const getParticleStyle = (index: number) => {
@@ -162,28 +171,27 @@ const getParticleStyle = (index: number) => {
   }
 }
 
-// 格式化日期
+// 格式化日期（支持多语言）
 const formatDate = (dateString: string) => {
-  try {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('zh-CN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
-  } catch {
-    return dateString
-  }
+  const date = new Date(dateString)
+  const localeCode = locale.value === 'zh' ? 'zh-CN' : 'en-US'
+  return date.toLocaleDateString(localeCode, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
 }
 
 // 获取简介数据
 const fetchProfileData = () => {
   loading.value = true
   service.get<InstituteProfile>('/api/instituteProfile').then((res: any) => {
-    console.log(res)
-    profileData.value = res || {}
-  }).catch((error) => {
-    console.error('获取简介数据失败:', error)
+    rawProfileData.value = res || {}
+    // 设置多语言数据处理
+    if (res) {
+      setData(res)
+      console.log('处理后的多语言数据:', multiLangData.value)
+    }
   }).finally(() => {
     loading.value = false
   })

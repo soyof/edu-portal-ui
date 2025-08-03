@@ -37,36 +37,6 @@
             </li>
           </ul>
         </div>
-
-        <!-- 订阅 -->
-        <div class="footer-section subscribe-section">
-          <h3 class="tech-line">{{ $t('footer.subscribe') }}</h3>
-          <div class="subscribe-form">
-            <el-input v-model="email" :placeholder="$t('footer.emailPlaceholder')" />
-            <el-button type="primary" :disabled="!isValidEmail">
-              {{ $t('footer.subscribeBtn') }}
-            </el-button>
-          </div>
-        </div>
-
-        <!-- 社交媒体链接 -->
-        <div class="footer-section social-links">
-          <h3 class="tech-line">{{ $t('footer.followUs') }}</h3>
-          <div class="social-icons">
-            <a href="#" class="social-icon" aria-label="WeChat">
-              <el-icon><ChatRound /></el-icon>
-            </a>
-            <a href="#" class="social-icon" aria-label="Weibo">
-              <el-icon><Promotion /></el-icon>
-            </a>
-            <a href="#" class="social-icon" aria-label="LinkedIn">
-              <el-icon><Connection /></el-icon>
-            </a>
-            <a href="#" class="social-icon" aria-label="Twitter">
-              <el-icon><ChatRound /></el-icon>
-            </a>
-          </div>
-        </div>
       </div>
 
       <!-- 底部版权信息 -->
@@ -85,16 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { Location, Message, ChatRound, Connection, Promotion } from '@element-plus/icons-vue'
-
-const email = ref('')
-
-// 简单的邮箱验证
-const isValidEmail = computed(() => {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return regex.test(email.value)
-})
+import { Location, Message } from '@element-plus/icons-vue'
 </script>
 
 <style lang="less" scoped>
@@ -166,29 +127,52 @@ const isValidEmail = computed(() => {
   position: relative;
   z-index: 10;
   padding-bottom: 30px;
+  backdrop-filter: blur(10px);
 }
 
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
   margin-bottom: 50px;
-
-  @media (max-width: @desktop-breakpoint) {
-    grid-template-columns: repeat(2, 1fr);
-  }
 
   @media (max-width: @tablet-breakpoint) {
     grid-template-columns: 1fr;
+    gap: 30px;
   }
 }
 
 .footer-section {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
   h3 {
     font-size: 1.4rem;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     position: relative;
     display: inline-block;
+    color: var(--primary-color);
+    font-weight: 600;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      border-radius: 1px;
+    }
   }
 }
 
@@ -196,17 +180,22 @@ const isValidEmail = computed(() => {
   .footer-logo {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 
     h2 {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       margin: 0;
-      margin-left: 10px;
+      margin-left: 12px;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 600;
     }
 
     .logo-icon {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       position: relative;
 
       .dna-helix {
@@ -216,14 +205,14 @@ const isValidEmail = computed(() => {
         border-radius: 50%;
 
         &.dna-strand-1 {
-          border-left: 2px solid var(--primary-color);
-          border-right: 2px solid var(--accent-color);
+          border-left: 3px solid var(--primary-color);
+          border-right: 3px solid var(--accent-color);
           animation: dnaRotate 10s linear infinite;
         }
 
         &.dna-strand-2 {
-          border-top: 2px solid var(--primary-color);
-          border-bottom: 2px solid var(--accent-color);
+          border-top: 3px solid var(--primary-color);
+          border-bottom: 3px solid var(--accent-color);
           animation: dnaRotate 10s linear infinite reverse;
         }
       }
@@ -231,8 +220,17 @@ const isValidEmail = computed(() => {
   }
 
   p {
-    opacity: 0.8;
-    line-height: 1.6;
+    opacity: 0.85;
+    line-height: 1.7;
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+}
+
+.contact-info {
+  h3 {
+    color: var(--primary-color);
+    font-weight: 600;
   }
 }
 
@@ -242,78 +240,36 @@ const isValidEmail = computed(() => {
   margin: 0;
 
   li {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
     display: flex;
     align-items: flex-start;
+    padding: 8px 0;
+    transition: all 0.3s ease;
 
     .el-icon {
-      margin-right: @spacing-sm;
+      margin-right: 15px;
       margin-top: 2px;
-      font-size: 20px;
+      font-size: 22px;
       color: var(--primary-color);
       flex-shrink: 0;
     }
 
     span {
-      opacity: 0.8;
+      opacity: 0.85;
+      font-size: 0.95rem;
     }
 
     .address-info {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
 
       .postal-code {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         opacity: 0.7;
-        color: var(--primary-color);
+        font-weight: 500;
       }
     }
-  }
-}
-
-.subscribe-form {
-  display: flex;
-  margin-top: 20px;
-
-  .el-input {
-    margin-right: 10px;
-  }
-
-  @media (max-width: @tablet-breakpoint) {
-    flex-direction: column;
-
-    .el-input {
-      margin-right: 0;
-      margin-bottom: 10px;
-    }
-  }
-}
-
-.social-icons {
-  display: flex;
-  gap: 15px;
-}
-
-.social-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-
-  .el-icon {
-    font-size: 20px;
-    color: var(--light-color);
-  }
-
-  &:hover {
-    background-color: var(--primary-color);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
 }
 

@@ -92,18 +92,44 @@
   
   // 分页控件
   .el-pagination {
-    button, span {
-      background-color: transparent;
-      color: rgba(255, 255, 255, 0.7);
+    .btn-prev,
+    .btn-next {
+      background-color: #374151;
+      color: #f9fafb;
+      border: 1px solid #4b5563;
       
       &:hover {
-        color: @dark-primary-color;
+        background-color: #4b5563;
+        color: #ffffff;
+      }
+      
+      &:disabled {
+        background-color: #1f2937;
+        color: #6b7280;
+        border-color: #374151;
+      }
+    }
+    
+    .el-pager li {
+      background-color: #374151;
+      color: #f9fafb;
+      border: 1px solid #4b5563;
+      
+      &:hover {
+        background-color: #4b5563;
+        color: #ffffff;
       }
       
       &.is-active {
         background-color: @dark-primary-color;
-        color: #fff;
+        color: #ffffff;
+        border-color: @dark-primary-color;
       }
+    }
+    
+    .el-pagination__total,
+    .el-pagination__jump {
+      color: #f9fafb;
     }
   }
 }

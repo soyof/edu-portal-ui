@@ -189,17 +189,25 @@
   
   // 分页
   .el-pagination {
-    .el-pager li.is-active {
-      color: @purple-theme !important;
-      border-color: @purple-theme !important;
+    .el-pager li {
+      &.is-active {
+        background-color: @purple-theme !important;
+        color: #ffffff !important;
+        border-color: @purple-theme !important;
+      }
+      
+      &:hover:not(.is-active) {
+        color: @purple-theme !important;
+        border-color: @purple-theme !important;
+      }
     }
     
-    .el-pager li:hover {
-      color: @purple-theme !important;
-    }
-    
-    button:hover {
-      color: @purple-theme !important;
+    .btn-prev,
+    .btn-next {
+      &:hover:not(:disabled) {
+        color: @purple-theme !important;
+        border-color: @purple-theme !important;
+      }
     }
   }
   

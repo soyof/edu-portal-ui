@@ -21,10 +21,52 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: 'members' }
   },
   {
+    path: '/members/:userId',
+    name: 'UserDetail',
+    component: () => import('../views/members/userDetail.vue'),
+    meta: { title: 'userDetail' }
+  },
+  {
     path: '/research',
     name: 'Research',
     component: () => import('../views/research/reaearch.vue'),
     meta: { title: 'research' }
+  },
+  {
+    path: '/research/papers',
+    name: 'PapersList',
+    component: () => import('../views/research/papersList.vue'),
+    meta: { title: 'papersList' }
+  },
+  {
+    path: '/research/papers/:id',
+    name: 'PaperDetail',
+    component: () => import('../views/research/paperDetail.vue'),
+    meta: { title: 'paperDetail' }
+  },
+  {
+    path: '/research/patents/:id',
+    name: 'PatentDetail',
+    component: () => import('../views/research/patentDetail.vue'),
+    meta: { title: 'patentDetail' }
+  },
+  {
+    path: '/research/books/:id',
+    name: 'BookDetail',
+    component: () => import('../views/research/bookDetail.vue'),
+    meta: { title: 'bookDetail' }
+  },
+  {
+    path: '/research/patents',
+    name: 'PatentsList',
+    component: () => import('../views/research/patentsList.vue'),
+    meta: { title: 'patentsList' }
+  },
+  {
+    path: '/research/books',
+    name: 'BooksList',
+    component: () => import('../views/research/booksList.vue'),
+    meta: { title: 'booksList' }
   },
   {
     path: '/news',
@@ -69,4 +111,4 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-export default router 
+export default router

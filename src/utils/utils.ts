@@ -179,7 +179,7 @@ export const removeSpace = (info: any): any => {
 export const underlineToHump = (s: any): any => {
   if (typeof s !== 'string') return s
   if (s.indexOf('_') <= 0) return s
-  return s.replace(/_(\w)/g, (all, letter) => {
+  return s.replace(/_(\w)/g, (_, letter) => {
     return letter.toUpperCase()
   })
 }
@@ -274,4 +274,90 @@ export const getRandom = (digit = 32): string => {
     randomStr += charStr.charAt(Math.floor(Math.random() * charStr.length))
   })
   return randomStr
+}
+
+export const isSimpleType = (info: any) => {
+  return getValueType(info) !== 'array' && getValueType(info) !== 'object'
+}
+
+/**
+ * 获取多语言信息（支持xxx, xxxEn格式）
+ * @param info 需要获取多语言信息的数据
+ * @param currentLocale 当前语言（可选，如果不传则从localStorage获取）
+ * @returns 多语言信息
+ */
+export const getNewInfoForLanguage = (info: object | any[], currentLocale?: string): any => {
+  const language = currentLocale || window.localStorage.getItem('locale') || 'zh'
+  let newInfo = JSON.parse(JSON.stringify(info))
+  const infoType = getValueType(newInfo)
+
+  if (infoType === 'object') {
+    const keys = Object.keys(newInfo)
+    keys.forEach(key => {
+      const valType = getValueType(newInfo[key])
+      if (valType === 'string') {
+        // 支持两种格式：key_en 和 keyEn
+        const englishKey1 = `${key}_en`
+        const englishKey2 = `${key}En`
+
+        if (language === 'en') {
+          // 优先使用 keyEn 格式，然后是 key_en 格式
+          newInfo[key] = newInfo[englishKey2] || newInfo[englishKey1] || newInfo[key] || ''
+        } else {
+          // 中文模式下使用原字段
+          newInfo[key] = newInfo[key] || ''
+        }
+      } else if (valType === 'array') {
+        const isSimpleArray = newInfo[key].every((item: any) => isSimpleType(item))
+        if (isSimpleArray) {
+          // 对于简单数组，也支持两种格式
+          const englishKey1 = `${key}_en`
+          const englishKey2 = `${key}En`
+
+          if (language === 'en') {
+            const englishArray = newInfo[englishKey2] || newInfo[englishKey1]
+            const isExist = englishArray && englishArray.length > 0
+            newInfo[key] = isExist ? englishArray : newInfo[key]
+          }
+        } else {
+          newInfo[key] = getNewInfoForLanguage(newInfo[key], language)
+        }
+      } else if (valType === 'object') {
+        newInfo[key] = getNewInfoForLanguage(newInfo[key], language)
+      }
+    })
+  }
+  if (infoType === 'array') {
+    newInfo = newInfo.map((item: any) => {
+      return getNewInfoForLanguage(item, language)
+    })
+  }
+  return newInfo
+}
+
+/**
+ * 创建响应式多语言数据处理器
+ * @param data 原始数据
+ * @returns 响应式的多语言数据
+ */
+export const createMultiLangData = (data: any) => {
+  const processData = (currentLocale: string) => {
+    return getNewInfoForLanguage(data, currentLocale)
+  }
+
+  return {
+    // 获取当前语言的数据
+    getData: (locale?: string) => processData(locale || window.localStorage.getItem('locale') || 'zh'),
+    // 监听语言变化
+    onLanguageChange: (callback: (newData: any, locale: string) => void) => {
+      const handleStorageChange = (e: StorageEvent) => {
+        if (e.key === 'locale' && e.newValue) {
+          const newData = processData(e.newValue)
+          callback(newData, e.newValue)
+        }
+      }
+      window.addEventListener('storage', handleStorageChange)
+      return () => window.removeEventListener('storage', handleStorageChange)
+    }
+  }
 }

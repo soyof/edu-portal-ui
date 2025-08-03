@@ -40,7 +40,7 @@ export const getAnnouncements = (): Promise<Announcement[]> => {
           type: 'info',
           link: '/news'
         }
-      ]);
-    }, 300);
-  });
-}; 
+      ])
+    }, 300)
+  })
+}

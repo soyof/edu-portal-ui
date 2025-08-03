@@ -15,6 +15,13 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, '/eduPortal'), // 重写路径，将/api/login转换为/eduPortal/login
         secure: false, // 如果是https接口，需要配置这个参数
         ws: true // 是否代理 websockets
+      },
+      '/fileApi': {
+        target: 'http://127.0.0.1:3100', // 后端服务地址
+        changeOrigin: true, // 支持跨域
+        rewrite: (path) => path.replace(/^\/fileApi/, '/eduServer/manage'),
+        secure: false, // 如果是https接口，需要配置这个参数
+        ws: true // 是否代理 websockets
       }
     }
   },
