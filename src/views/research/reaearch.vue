@@ -555,7 +555,7 @@ onMounted(() => {
         backdrop-filter: blur(10px);
         box-shadow: var(--shadow-md);
         transition: all 0.3s ease;
-        animation: slideInUp 0.6s ease-out;
+        /* 使用 animate.css 的 fadeInUp 动画，通过 Vue 指令添加 */
         text-decoration: none;
         color: inherit;
         cursor: pointer;
@@ -701,42 +701,55 @@ onMounted(() => {
         display: flex;
         align-items: center;
         gap: 1rem;
-        font-size: 2.5rem;
-        font-weight: 800;
+        font-size: 2.8rem;
+        font-weight: 900;
         color: var(--dark-text);
         position: relative;
+        margin-bottom: 0.5rem;
 
         .dark-mode & {
           color: #f7fafc;
         }
 
         .title-decorator {
-          width: 4px;
-          height: 50px;
-          background: var(--gradient-primary);
-          border-radius: 2px;
-          box-shadow: 0 0 10px rgba(0, 184, 169, 0.3);
+          width: 6px;
+          height: 60px;
+          background: linear-gradient(180deg, var(--tech-primary), var(--tech-secondary), var(--tech-accent), var(--tech-pink));
+          border-radius: 3px;
+          box-shadow:
+            0 0 20px rgba(14, 165, 233, 0.4),
+            0 0 40px rgba(59, 130, 246, 0.2);
+          animation: titleGlow 3s ease-in-out infinite;
         }
 
         .title-text {
-          color: var(--primary-color);
+          background: linear-gradient(135deg, var(--tech-primary), var(--tech-secondary), var(--tech-accent));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
           position: relative;
-          font-weight: 800;
+          font-weight: 900;
+          letter-spacing: -0.02em;
+          text-shadow: 0 4px 8px rgba(14, 165, 233, 0.1);
 
-      .dark-mode & {
-            color: #4fd1c7;
+          .dark-mode & {
+            background: linear-gradient(135deg, var(--tech-secondary), var(--tech-accent), var(--tech-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
           }
 
           &::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -12px;
             left: 0;
-            width: 60px;
-            height: 3px;
-            background: var(--gradient-primary);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--tech-primary), var(--tech-secondary), var(--tech-accent));
             border-radius: 2px;
-            opacity: 0.6;
+            opacity: 0.8;
+            animation: titleUnderline 2s ease-in-out infinite;
           }
         }
       }
@@ -789,65 +802,81 @@ onMounted(() => {
 
 // Content Cards
 .content-card {
-  background: white;
-  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(var(--primary-color-rgb), 0.1);
   border-radius: 20px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(var(--primary-color-rgb), 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  animation: fadeInUp 0.6s ease-out;
+  /* 使用 animate.css 的 fadeInUp 动画，通过 Vue 指令添加 */
   overflow: hidden;
+  cursor: pointer;
 
   .dark-mode & {
-    background: #2d3748;
-    border-color: #4a5568;
+    background: rgba(30, 41, 59, 0.95);
+    border-color: rgba(var(--secondary-color-rgb), 0.2);
     color: #f7fafc;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   }
 
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow:
-      var(--shadow-lg),
-      0 0 0 1px rgba(0, 184, 169, 0.1),
-      0 20px 40px rgba(0, 184, 169, 0.08);
-    border-color: var(--primary-color);
-
-    &::before {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    &::after {
-      opacity: 1;
-    }
-  }
-
+  // 科技风左边框
   &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--tech-primary), var(--tech-secondary), var(--tech-accent));
+    opacity: 0.6;
+    transition: all 0.3s ease;
+  }
+
+  // 顶部装饰线
+  &::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: var(--gradient-primary);
-    border-radius: 20px 20px 0 0;
-    opacity: 0;
-    transform: translateX(-100%);
-    transition: all 0.4s ease;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(var(--primary-color-rgb), 0.3) 20%,
+      rgba(var(--primary-color-rgb), 0.5) 50%,
+      rgba(var(--primary-color-rgb), 0.3) 80%,
+      transparent 100%);
+    transition: all 0.3s ease;
   }
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(0, 184, 169, 0.03) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
+  &:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 60px rgba(var(--primary-color-rgb), 0.15);
+    border-color: rgba(var(--primary-color-rgb), 0.4);
+
+    .dark-mode & {
+      box-shadow: 0 20px 60px rgba(var(--secondary-color-rgb), 0.2);
+      border-color: rgba(var(--secondary-color-rgb), 0.4);
+    }
+
+    &::before {
+      opacity: 1;
+      width: 6px;
+      background: linear-gradient(180deg, var(--tech-primary), var(--tech-secondary), var(--tech-accent), var(--tech-pink));
+      animation: cardBorderPulse 2s ease-in-out infinite;
+    }
+
+    &::after {
+      height: 2px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(var(--primary-color-rgb), 0.8) 20%,
+        rgba(var(--primary-color-rgb), 0.9) 50%,
+        rgba(var(--primary-color-rgb), 0.8) 80%,
+        transparent 100%);
+    }
   }
 
   .card-header {
@@ -872,53 +901,64 @@ onMounted(() => {
     }
 
     .card-date,
-    .book-date {
-      background: rgba(var(--primary-color-rgb), 0.08);
-      color: var(--primary-color);
-      padding: 0.5rem 1.2rem;
+    .book-date,
+    .paper-date {
+      color: var(--tech-primary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+      padding: 8px 16px;
+      background: rgba(var(--primary-color-rgb), 0.1);
+      border: 1px solid rgba(var(--primary-color-rgb), 0.2);
       border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      border: 1px solid rgba(var(--primary-color-rgb), 0.15);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 2px 12px rgba(var(--primary-color-rgb), 0.15);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
       &::before {
+        content: '📅';
+        font-size: 0.8rem;
+      }
+
+      &::after {
         content: '';
         position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(var(--primary-color-rgb), 0.1), transparent);
-        transition: left 0.6s ease;
+        inset: 0;
+        border-radius: 20px;
+        padding: 1px;
+        background: linear-gradient(45deg, var(--tech-primary), var(--tech-secondary), var(--tech-accent));
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.3s ease;
       }
 
       &:hover {
-        transform: translateY(-1px);
-        background: rgba(var(--primary-color-rgb), 0.12);
+        background: rgba(var(--primary-color-rgb), 0.15);
+        border-color: rgba(var(--primary-color-rgb), 0.4);
+        color: var(--tech-primary);
+        transform: translateY(-2px);
         box-shadow: 0 4px 20px rgba(var(--primary-color-rgb), 0.25);
-        border-color: rgba(var(--primary-color-rgb), 0.25);
 
-        &::before {
-          left: 100%;
+        &::after {
+          opacity: 1;
+        }
+
+        .dark-mode & {
+          background: rgba(var(--secondary-color-rgb), 0.2);
+          border-color: rgba(var(--secondary-color-rgb), 0.5);
+          color: var(--tech-secondary);
+          box-shadow: 0 4px 20px rgba(var(--secondary-color-rgb), 0.25);
         }
       }
 
       .dark-mode & {
-        color: #4fd1c7;
-        background: rgba(79, 209, 199, 0.08);
-        border-color: rgba(79, 209, 199, 0.15);
-        box-shadow: 0 2px 12px rgba(79, 209, 199, 0.15);
-
-        &:hover {
-          background: rgba(79, 209, 199, 0.12);
-          border-color: rgba(79, 209, 199, 0.25);
-          box-shadow: 0 4px 20px rgba(79, 209, 199, 0.25);
-        }
+        color: var(--tech-secondary);
+        background: rgba(var(--secondary-color-rgb), 0.1);
+        border-color: rgba(var(--secondary-color-rgb), 0.2);
       }
     }
 
@@ -934,19 +974,41 @@ onMounted(() => {
         flex-wrap: wrap;
 
         .patent-number {
-          background: rgba(var(--primary-color-rgb), 0.12);
-          color: var(--primary-color);
-          padding: 0.4rem 1rem;
-          border-radius: 20px;
-          font-family: 'Courier New', monospace;
-          font-size: 0.8rem;
-          font-weight: 700;
+          color: var(--tech-primary);
+          font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+          font-size: 0.85rem;
+          font-weight: 600;
+          padding: 8px 16px;
+          background: rgba(var(--primary-color-rgb), 0.1);
           border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+          border-radius: 20px;
           letter-spacing: 0.5px;
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+
+          &::before {
+            content: '🔢';
+            margin-right: 6px;
+            font-size: 0.8rem;
+          }
+
+          &:hover {
+            background: rgba(var(--primary-color-rgb), 0.15);
+            border-color: rgba(var(--primary-color-rgb), 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(var(--primary-color-rgb), 0.25);
+          }
 
           .dark-mode & {
-            color: #4fd1c7;
-            border-color: rgba(79, 209, 199, 0.2);
+            color: var(--tech-secondary);
+            background: rgba(var(--secondary-color-rgb), 0.1);
+            border-color: rgba(var(--secondary-color-rgb), 0.2);
+
+            &:hover {
+              background: rgba(var(--secondary-color-rgb), 0.15);
+              border-color: rgba(var(--secondary-color-rgb), 0.4);
+            }
           }
         }
 
@@ -965,69 +1027,102 @@ onMounted(() => {
   }
 
   // 专利日期区域
-  .patent-dates-section {
-    background: rgba(0, 184, 169, 0.03);
-    padding: 1rem;
-    border-radius: 12px;
-    border: 1px solid rgba(0, 184, 169, 0.1);
-    margin-bottom: 1.5rem;
-
-    .dark-mode & {
-      background: rgba(0, 184, 169, 0.05);
-      border-color: rgba(0, 184, 169, 0.2);
-    }
-
-    .date-row {
-      display: flex;
-      justify-content: space-between;
+  .patent-publish-date {
+    .date-value {
+      color: var(--tech-primary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+      padding: 8px 16px;
+      background: rgba(var(--primary-color-rgb), 0.1);
+      border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+      border-radius: 20px;
+      display: inline-flex;
       align-items: center;
-      padding: 0.3rem 0;
+      gap: 6px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
 
-      &:not(:last-child) {
-        border-bottom: 1px solid rgba(0, 184, 169, 0.1);
-        margin-bottom: 0.5rem;
-        padding-bottom: 0.8rem;
+      &::before {
+        content: '📅';
+        font-size: 0.8rem;
       }
 
-      .date-label {
-    color: var(--primary-color);
-        font-weight: 600;
-        font-size: 0.9rem;
+      &:hover {
+        background: rgba(var(--primary-color-rgb), 0.15);
+        border-color: rgba(var(--primary-color-rgb), 0.4);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(var(--primary-color-rgb), 0.25);
       }
 
-      .date-value {
-        color: var(--dark-text);
-        font-weight: 500;
-        font-size: 0.9rem;
+      .dark-mode & {
+        color: var(--tech-secondary);
+        background: rgba(var(--secondary-color-rgb), 0.1);
+        border-color: rgba(var(--secondary-color-rgb), 0.2);
 
-        .dark-mode & {
-          color: #e2e8f0;
+        &:hover {
+          background: rgba(var(--secondary-color-rgb), 0.15);
+          border-color: rgba(var(--secondary-color-rgb), 0.4);
         }
       }
     }
+  }
 
-    .translated-tag {
-      background: linear-gradient(135deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.8));
-      color: white;
-      padding: 0.3rem 0.8rem;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      box-shadow: 0 2px 8px rgba(var(--accent-color-rgb), 0.2);
+  .translated-tag {
+    background: linear-gradient(135deg, var(--tech-accent), var(--tech-pink));
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    box-shadow: 0 2px 12px rgba(var(--accent-color-rgb), 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &::before {
+      content: '🌍';
+      margin-right: 6px;
+      font-size: 0.8rem;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(var(--accent-color-rgb), 0.4);
     }
   }
 
-  .card-title {
-    font-size: 1.3rem;
+  .card-title,
+  .paper-title,
+  .patent-title,
+  .book-title {
+    font-size: 1.4rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
     line-height: 1.4;
     color: var(--dark-text);
     position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
 
     .dark-mode & {
       color: #f7fafc;
+    }
+
+    &:hover {
+      color: var(--tech-primary);
+      transform: translateX(4px);
+
+      .dark-mode & {
+        color: var(--tech-secondary);
+      }
+
+      &::after {
+        width: 60px;
+        opacity: 1;
+      }
     }
 
     &::after {
@@ -1036,10 +1131,11 @@ onMounted(() => {
       bottom: -8px;
       left: 0;
       width: 40px;
-      height: 2px;
-      background: var(--gradient-primary);
-      border-radius: 1px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--tech-primary), var(--tech-secondary), var(--tech-accent));
+      border-radius: 2px;
       opacity: 0.6;
+      transition: all 0.3s ease;
     }
   }
 
@@ -1152,32 +1248,9 @@ onMounted(() => {
   }
 }
 
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+// 使用 animate.css 提供的动画，无需自定义 keyframes
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+// spin 动画已在全局样式中定义
 
 @keyframes pulse {
   0%, 100% {
@@ -1187,6 +1260,41 @@ onMounted(() => {
   50% {
     transform: translate(-50%, -50%) scale(1.2);
     opacity: 0.7;
+  }
+}
+
+@keyframes titleGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 20px rgba(14, 165, 233, 0.4),
+      0 0 40px rgba(59, 130, 246, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(14, 165, 233, 0.6),
+      0 0 60px rgba(59, 130, 246, 0.3);
+  }
+}
+
+@keyframes titleUnderline {
+  0%, 100% {
+    width: 80px;
+    opacity: 0.8;
+  }
+  50% {
+    width: 100px;
+    opacity: 1;
+  }
+}
+
+@keyframes cardBorderPulse {
+  0%, 100% {
+    background: linear-gradient(180deg, var(--tech-primary), var(--tech-secondary), var(--tech-accent));
+    opacity: 1;
+  }
+  50% {
+    background: linear-gradient(180deg, var(--tech-secondary), var(--tech-accent), var(--tech-pink));
+    opacity: 0.8;
   }
 }
 

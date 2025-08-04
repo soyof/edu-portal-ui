@@ -1047,16 +1047,7 @@ onMounted(() => {
   }
 }
 
-@keyframes loadingDots {
-  0%, 80%, 100% {
-    transform: scale(0.8);
-    opacity: 0.5;
-  }
-  40% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-}
+// loadingDots 动画已在全局样式中定义
 
 @keyframes photoBorderSpin {
   0% {

@@ -1,377 +1,352 @@
 <template>
   <div class="facilities-page">
+    <!-- Hero Section -->
     <section class="hero-section">
-      <div class="container">
-        <h1 class="page-title">{{ $t('facilities.title') }}</h1>
+      <div class="hero-background">
+        <div class="floating-elements">
+          <div
+            v-for="i in 12"
+            :key="i"
+            class="float-element"
+            :style="{
+              left: Math.random() * 100 + '%',
+              top: Math.random() * 100 + '%',
+              animationDelay: Math.random() * 6 + 's',
+              animationDuration: (6 + Math.random() * 4) + 's'
+            }"
+          ></div>
+        </div>
       </div>
-    </section>
-    
-    <section class="content-section">
+
       <div class="container">
-        <h2>{{ $t('facilities.laboratories') }}</h2>
-        
-        <div class="facilities-grid">
-          <div class="facility-card glass-effect" v-for="(lab, index) in laboratories" :key="index">
-            <div class="facility-image" :style="{ backgroundImage: `url(${lab.image})` }">
-              <div class="facility-overlay">
-                <el-button type="primary" round>
-                  {{ $t('facilities.virtualTour') }}
-                </el-button>
-              </div>
-            </div>
-            <div class="facility-content">
-              <h3>{{ lab.name }}</h3>
-              <p>{{ lab.description }}</p>
-              <div class="facility-features">
-                <div class="feature" v-for="(feature, i) in lab.features" :key="i">
-                  <el-icon><check /></el-icon>
-                  <span>{{ feature }}</span>
-                </div>
-              </div>
-            </div>
+        <div class="hero-content">
+          <h1 class="page-title">{{ $t('facilities.title') }}</h1>
+          <p class="page-subtitle">{{ $t('facilities.subtitle') }}</p>
+          <div v-if="activeTab === 'instruments'" class="stats-info">
+            <span class="total-count">{{ $t('facilities.totalInstruments') }}: {{ totalInstruments }}</span>
           </div>
         </div>
-        
-        <h2>{{ $t('facilities.equipment') }}</h2>
-        
-        <el-collapse>
-          <el-collapse-item v-for="(category, index) in equipmentCategories" :key="index" :title="category.name">
-            <div class="equipment-list">
-              <div class="equipment-item" v-for="(equipment, i) in category.items" :key="i">
-                <div class="equipment-image">
-                  <div class="image-placeholder"></div>
-                </div>
-                <div class="equipment-details">
-                  <h4>{{ equipment.name }}</h4>
-                  <p>{{ equipment.description }}</p>
-                  <p class="equipment-specs">{{ equipment.specs }}</p>
-                </div>
-              </div>
-            </div>
-          </el-collapse-item>
-        </el-collapse>
       </div>
     </section>
-    
-    <section class="booking-section">
+
+    <!-- Navigation Tabs -->
+    <section class="nav-tabs-section">
       <div class="container">
-        <h2>{{ $t('facilities.scheduling') }}</h2>
-        <p>要预约使用我们的研究设施，请填写以下表单或直接联系我们的设施管理团队。</p>
-        
-        <el-form class="booking-form glass-effect" label-position="top">
-          <el-form-item label="姓名">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="机构/部门">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="设施">
-            <el-select placeholder="选择设施">
-              <el-option v-for="(lab, index) in laboratories" :key="index" :label="lab.name" :value="index"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="预约日期">
-            <el-date-picker type="date" placeholder="选择日期"></el-date-picker>
-          </el-form-item>
-          <el-form-item label="预约时间">
-            <el-time-select placeholder="选择时间"></el-time-select>
-          </el-form-item>
-          <el-form-item label="用途描述">
-            <el-input type="textarea" rows="3"></el-input>
-          </el-form-item>
-          
-          <el-button type="primary">提交预约</el-button>
-        </el-form>
+        <ElTabs v-model="activeTab" class="facilities-tabs" @tabChange="handleTabChange">
+          <ElTabPane :label="$t('facilities.labProfile')" name="profile">
+            <LabProfile ref="labProfileRef" />
+          </ElTabPane>
+
+          <ElTabPane :label="$t('facilities.instruments')" name="instruments">
+            <InstrumentsList ref="instrumentsListRef" :autoLoad="false" />
+          </ElTabPane>
+        </ElTabs>
       </div>
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Check } from '@element-plus/icons-vue'
+import { ref, onMounted, computed, nextTick } from 'vue'
+import { ElTabs, ElTabPane } from 'element-plus'
 
-// 模拟数据 - 实验室
-const laboratories = [
-  {
-    name: '合成生物学实验室',
-    description: '配备最先进的基因编辑和合成生物学研究设备，支持微生物工程和代谢工程研究。',
-    image: 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    features: [
-      '基因编辑工作站',
-      '高通量测序平台',
-      '微生物培养系统',
-      '代谢物分析设备'
-    ]
-  },
-  {
-    name: '生物材料实验室',
-    description: '专注于生物基材料的研发与测试，配备材料表征和性能测试的全套设备。',
-    image: 'https://images.unsplash.com/photo-1614308458649-cd97d6db0b5d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    features: [
-      '材料3D打印系统',
-      '力学性能测试设备',
-      '材料表征仪器',
-      '生物降解性测试平台'
-    ]
-  },
-  {
-    name: '生物信息学计算中心',
-    description: '高性能计算集群和专业数据分析平台，支持大规模基因组数据分析和生物系统模拟。',
-    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-    features: [
-      '高性能计算集群',
-      '生物数据可视化系统',
-      '人工智能模型训练平台',
-      '生物系统模拟软件'
-    ]
-  }
-]
+import LabProfile from '@/components/facilities/labProfile.vue'
+import InstrumentsList from '@/components/facilities/instrumentsList.vue'
 
-// 模拟数据 - 设备分类
-const equipmentCategories = [
-  {
-    name: '基因编辑与合成设备',
-    items: [
-      {
-        name: 'CRISPR-Cas9基因编辑系统',
-        description: '用于高效、精准的基因组编辑，支持多种细胞类型。',
-        specs: '编辑精度：99.7%，适用细胞类型：20+'
-      },
-      {
-        name: '高通量DNA合成仪',
-        description: '自动化DNA合成平台，可并行合成多条DNA片段。',
-        specs: '最大长度：10kb，并行能力：96条/批次'
-      }
-    ]
-  },
-  {
-    name: '分析与检测设备',
-    items: [
-      {
-        name: '高分辨质谱仪',
-        description: '用于代谢物和蛋白质的精确检测与定量分析。',
-        specs: '分辨率：120,000，质量精度：<1ppm'
-      },
-      {
-        name: '共聚焦显微镜',
-        description: '高分辨率细胞成像系统，支持活细胞实时观察。',
-        specs: '分辨率：200nm，Z轴扫描范围：100μm'
-      }
-    ]
-  },
-  {
-    name: '培养与发酵设备',
-    items: [
-      {
-        name: '生物反应器系统',
-        description: '用于微生物培养和代谢工程的可控生物反应器。',
-        specs: '容量：2L-50L，温控范围：15-60℃'
-      },
-      {
-        name: '细胞培养工作站',
-        description: '全自动化细胞培养系统，提供稳定的培养环境。',
-        specs: '培养皿位置：96，CO₂控制：0-20%'
-      }
-    ]
+// 响应式数据
+const activeTab = ref('profile')
+
+// 组件引用
+const labProfileRef = ref()
+const instrumentsListRef = ref()
+
+// 懒加载状态记录 - 使用 Set 记录已加载的 tab
+const loadedTabs = ref(new Set(['profile'])) // 默认加载 profile tab
+
+// 计算属性
+const totalInstruments = computed(() => {
+  return instrumentsListRef.value?.totalInstruments || 0
+})
+
+// 方法
+const handleTabChange = (tabName: string | number) => {
+  const tabKey = tabName as string
+
+  // 懒加载：只在首次切换到某个tab时才加载数据
+  if (!loadedTabs.value.has(tabKey)) {
+    if (tabKey === 'instruments' && instrumentsListRef.value) {
+      instrumentsListRef.value.fetchInstruments()
+      loadedTabs.value.add('instruments')
+    } else if (tabKey === 'profile' && labProfileRef.value) {
+      labProfileRef.value.fetchLabProfile()
+      loadedTabs.value.add('profile')
+    }
   }
-]
+}
+
+// 手动刷新当前tab数据的方法
+const refreshCurrentTab = () => {
+  if (activeTab.value === 'instruments' && instrumentsListRef.value) {
+    instrumentsListRef.value.fetchInstruments()
+  } else if (activeTab.value === 'profile' && labProfileRef.value) {
+    labProfileRef.value.fetchLabProfile()
+  }
+}
+
+// 强制刷新指定tab数据（忽略懒加载状态）
+const forceRefreshTab = (tabName: string) => {
+  if (tabName === 'instruments' && instrumentsListRef.value) {
+    instrumentsListRef.value.fetchInstruments()
+    loadedTabs.value.add('instruments')
+  } else if (tabName === 'profile' && labProfileRef.value) {
+    labProfileRef.value.fetchLabProfile()
+    loadedTabs.value.add('profile')
+  }
+}
+
+// 暴露方法给父组件使用
+defineExpose({
+  refreshCurrentTab,
+  forceRefreshTab,
+  loadedTabs: loadedTabs.value
+})
+
+// 生命周期钩子
+onMounted(() => {
+  // 使用nextTick确保组件引用已经设置
+  nextTick(() => {
+    // 默认加载profile tab的数据
+    if (labProfileRef.value) {
+      labProfileRef.value.fetchLabProfile()
+    }
+  })
+})
 </script>
 
 <style lang="less" scoped>
 .facilities-page {
-  padding-top: 30px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+
+  .dark-mode & {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  }
 }
 
+// Hero Section
 .hero-section {
-  padding: 80px 0 40px;
-  text-align: center;
-}
-
-.page-title {
-  font-size: 3rem;
-  margin-bottom: 20px;
-}
-
-.content-section {
-  padding: 40px 0;
-  
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 30px;
-    position: relative;
-    display: inline-block;
-    
-    &:after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, var(--primary-color), transparent);
-    }
-  }
-}
-
-.facilities-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 30px;
-  margin-bottom: 60px;
-  
-  @media (max-width: @tablet-breakpoint) {
-    grid-template-columns: 1fr;
-  }
-}
-
-.facility-card {
-  border-radius: var(--border-radius-lg);
-  overflow: hidden;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-medium);
-    
-    .facility-overlay {
-      opacity: 1;
-    }
-  }
-}
-
-.facility-image {
-  height: 200px;
-  background-size: cover;
-  background-position: center;
   position: relative;
-  
-  .facility-overlay {
+  padding: 80px 0 60px;
+  background: linear-gradient(135deg,
+    rgba(14, 165, 233, 0.08),
+    rgba(59, 130, 246, 0.06),
+    rgba(139, 92, 246, 0.04),
+    rgba(236, 72, 153, 0.02));
+  overflow: hidden;
+
+  .dark-mode & {
+    background: linear-gradient(135deg,
+      rgba(15, 23, 42, 0.9),
+      rgba(30, 41, 59, 0.8),
+      rgba(51, 65, 85, 0.7));
+  }
+
+  .hero-background {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-}
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
 
-.facility-content {
-  padding: 20px;
-  
-  h3 {
-    font-size: 1.6rem;
-    margin-bottom: 10px;
-  }
-  
-  p {
-    margin-bottom: 20px;
-    line-height: 1.6;
-    opacity: 0.8;
-  }
-}
+    .floating-elements {
+      position: absolute;
+      width: 100%;
+      height: 100%;
 
-.facility-features {
-  .feature {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-    
-    .el-icon {
+      .float-element {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+        border-radius: 50%;
+        opacity: 0.4;
+        animation: detailFloat 8s ease-in-out infinite;
+        box-shadow: 0 0 6px rgba(14, 165, 233, 0.3);
+
+        &:nth-child(even) {
+          background: linear-gradient(45deg, var(--secondary-color), var(--tech-pink));
+          animation-direction: reverse;
+          animation-duration: 10s;
+        }
+
+        &:nth-child(3n) {
+          width: 4px;
+          height: 4px;
+          opacity: 0.6;
+          animation-duration: 9s;
+        }
+      }
+    }
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-content {
+    text-align: center;
+
+    .page-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 20px;
       color: var(--primary-color);
-      margin-right: 8px;
+
+      .dark-mode & {
+        color: #4fd1c7;
+      }
+
+      @media (max-width: 768px) {
+        font-size: 2.8rem;
+      }
+    }
+
+    .page-subtitle {
+      font-size: 1.3rem;
+      color: #64748b;
+      margin-bottom: 3rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+      font-weight: 500;
+
+      .dark-mode & {
+        color: #cbd5e0;
+      }
+
+      @media (max-width: 768px) {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+      }
+    }
+
+    .stats-info {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+
+      .total-count {
+        color: var(--primary-color);
+        font-weight: 700;
+        font-size: 1.2rem;
+        padding: 12px 32px;
+        background: rgba(var(--primary-color-rgb), 0.12);
+        border: 2px solid rgba(var(--primary-color-rgb), 0.25);
+        border-radius: 30px;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 8px 32px rgba(var(--primary-color-rgb), 0.15);
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 12px 48px rgba(var(--primary-color-rgb), 0.25);
+        }
+
+        .dark-mode & {
+          background: rgba(var(--secondary-color-rgb), 0.15);
+          border-color: rgba(var(--secondary-color-rgb), 0.3);
+          color: var(--secondary-color);
+        }
+      }
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
     }
   }
 }
 
-.equipment-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+// Tabs Section
+.nav-tabs-section {
+  padding: 40px 0;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .facilities-tabs {
+    :deep(.el-tabs__header) {
+      margin-bottom: 40px;
+      border-bottom: 2px solid rgba(var(--primary-color-rgb), 0.1);
+    }
+
+    :deep(.el-tabs__nav-wrap) {
+      display: flex;
+      justify-content: center;
+    }
+
+    :deep(.el-tabs__item) {
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 16px 32px;
+      color: #64748b;
+      transition: all 0.3s ease;
+
+      &.is-active {
+        color: var(--primary-color);
+        font-weight: 700;
+      }
+
+      &:hover {
+        color: var(--primary-color);
+      }
+
+      .dark-mode & {
+        color: #94a3b8;
+
+        &.is-active {
+          color: var(--secondary-color);
+        }
+
+        &:hover {
+          color: var(--secondary-color);
+        }
+      }
+    }
+
+    :deep(.el-tabs__active-bar) {
+      background: var(--primary-color);
+      height: 3px;
+
+      .dark-mode & {
+        background: var(--secondary-color);
+      }
+    }
+  }
 }
 
-.equipment-item {
-  display: flex;
-  gap: 20px;
-  padding: 15px;
-  border-radius: var(--border-radius-md);
-  background-color: rgba(247, 247, 255, 0.3);
-  
-  .dark-mode & {
-    background-color: rgba(26, 26, 46, 0.3);
+@keyframes detailFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.4;
   }
-  
-  @media (max-width: @mobile-breakpoint) {
-    flex-direction: column;
-  }
-}
-
-.equipment-image {
-  flex: 0 0 100px;
-  
-  .image-placeholder {
-    width: 100px;
-    height: 100px;
-    background-color: var(--primary-color);
-    opacity: 0.2;
-    border-radius: var(--border-radius-sm);
-  }
-}
-
-.equipment-details {
-  flex: 1;
-  
-  h4 {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
-  }
-  
-  p {
-    margin-bottom: 8px;
-    line-height: 1.5;
-  }
-  
-  .equipment-specs {
-    font-size: 0.9rem;
+  33% {
+    transform: translateY(-15px) rotate(120deg);
     opacity: 0.7;
   }
-}
-
-.booking-section {
-  padding: 60px 0;
-  background-color: rgba(247, 247, 255, 0.3);
-  
-  .dark-mode & {
-    background-color: rgba(26, 26, 46, 0.3);
-  }
-  
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-  }
-  
-  p {
-    margin-bottom: 30px;
-    max-width: 600px;
+  66% {
+    transform: translateY(-8px) rotate(240deg);
+    opacity: 0.6;
   }
 }
-
-.booking-form {
-  max-width: 600px;
-  padding: 30px;
-  border-radius: var(--border-radius-lg);
-  
-  .el-form-item {
-    margin-bottom: 20px;
-  }
-  
-  .el-button {
-    width: 100%;
-    margin-top: 10px;
-  }
-}
-</style> 
+</style>

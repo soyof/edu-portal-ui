@@ -185,8 +185,9 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { useI18n } from 'vue-i18n'
+
 import service from '@/utils/services'
+import { useLanguageText } from '@/hooks/useResearchSearch'
 
 // 专利响应接口
 export interface PatentResponse {
@@ -213,7 +214,7 @@ const getPatentDetail = (id: string): Promise<PatentResponse> => {
 // 路由和国际化
 const route = useRoute()
 const router = useRouter()
-const { locale } = useI18n()
+const { getCurrentLanguageText } = useLanguageText()
 
 // 响应式数据
 const loading = ref(true)
@@ -223,17 +224,17 @@ const patent = ref<PatentResponse | null>(null)
 // 计算属性
 const currentTitle = computed(() => {
   if (!patent.value) return ''
-  return locale.value === 'en' && patent.value.titleEn ? patent.value.titleEn : patent.value.title
+  return getCurrentLanguageText(patent.value, 'title')
 })
 
 const currentAbstract = computed(() => {
   if (!patent.value) return ''
-  return locale.value === 'en' && patent.value.abstractEn ? patent.value.abstractEn : patent.value.abstract
+  return getCurrentLanguageText(patent.value, 'abstract')
 })
 
 const currentContent = computed(() => {
   if (!patent.value) return ''
-  return locale.value === 'en' && patent.value.contentEn ? patent.value.contentEn : patent.value.content
+  return getCurrentLanguageText(patent.value, 'content')
 })
 
 // 方法
@@ -695,10 +696,7 @@ onMounted(() => {
 }
 
 // 动画效果
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+// spin 动画已在全局样式中定义
 
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }

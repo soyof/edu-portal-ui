@@ -848,10 +848,7 @@ onMounted(() => {
   100% { transform: rotate(360deg); }
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+// spin 动画已在全局样式中定义
 
 @keyframes pulse {
   0%, 100% { opacity: 0.3; transform: scale(1); }

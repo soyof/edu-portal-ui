@@ -18,7 +18,7 @@
               </li>
             </ol>
           </nav>
-          
+
           <h1 class="page-title">{{ $t('research.books') }}</h1>
           <p class="page-subtitle">{{ $t('research.booksDesc') }}</p>
           <div class="stats-info">
@@ -52,7 +52,7 @@
               </el-input>
             </div>
 
-            <div class="filter-item date-filters">
+            <div class="filter-item">
               <el-select
                 v-model="selectedYear"
                 :placeholder="$t('research.selectYear')"
@@ -67,7 +67,9 @@
                   :value="year"
                 />
               </el-select>
+            </div>
 
+            <div class="filter-item">
               <el-select
                 v-model="selectedMonth"
                 :placeholder="$t('research.selectMonth')"
@@ -150,16 +152,12 @@
         </div>
 
         <!-- Pagination -->
-        <div v-if="totalPages > 1" class="pagination">
-          <el-pagination
-            background
-            layout="prev, pager, next"
-            :total="total"
-            :pageSize="pageSize"
-            :currentPage="currentPage"
-            @currentChange="handlePageChange"
-          />
-        </div>
+        <CommonPagination
+          :total="total"
+          :pageSize="pageSize"
+          :currentPage="currentPage"
+          @currentChange="handlePageChange"
+        />
 
         <!-- Load More Loading -->
         <div v-if="loadingMore" class="load-more-loading">
@@ -181,6 +179,7 @@ import { useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import service from '@/utils/services'
 import { useResearchSearch, useLanguageText, type BaseSearchFilters } from '@/hooks/useResearchSearch'
+import CommonPagination from '@/components/common/commonPagination.vue'
 
 // 接口类型定义
 interface BookResponse {
@@ -467,23 +466,34 @@ onMounted(() => {
   }
 
   .page-title {
-    font-size: 2.8rem;
-    margin-bottom: 20px;
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg,
+      var(--tech-primary) 0%,
+      var(--tech-secondary) 30%,
+      var(--tech-accent) 60%,
+      var(--tech-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
     position: relative;
-    display: inline-block;
 
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+    .dark-mode & {
+      background: linear-gradient(135deg,
+        var(--tech-secondary) 0%,
+        var(--tech-accent) 30%,
+        var(--tech-purple) 60%,
+        var(--tech-pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     @media (max-width: 768px) {
-      font-size: 2.4rem;
+      font-size: 2.5rem;
     }
   }
 
@@ -516,125 +526,140 @@ onMounted(() => {
 
 // Search Filters
 .search-filters {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(var(--primary-color-rgb), 0.15);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(var(--primary-color-rgb), 0.08);
+  position: relative;
+  overflow: hidden;
 
   .dark-mode & {
-    background: #1f2937;
-    border-color: #374151;
+    background: rgba(30, 41, 59, 0.9);
+    border-color: rgba(var(--secondary-color-rgb), 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  }
+
+  // 科技风装饰线
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--tech-primary) 25%,
+      var(--tech-secondary) 50%,
+      var(--tech-accent) 75%,
+      transparent 100%);
   }
 
   .filter-row {
-    display: flex;
-    gap: 12px;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 300px 120px 120px;
+    gap: 16px;
+    align-items: end;
 
     @media (max-width: 768px) {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
     }
   }
 
   .filter-item {
     .search-input {
-      width: 240px;
-      max-width: 240px;
+      width: 100%;
+      min-height: 32px;
+      max-height: 32px;
 
       :deep(.el-input__wrapper) {
-        border-radius: 6px;
-        height: 32px;
-        border: 1px solid #d1d5db;
-        background: white;
-        transition: all 0.2s ease;
-        box-shadow: none;
+        background: rgba(255, 255, 255, 0.8) !important;
+        border: 1px solid rgba(var(--primary-color-rgb), 0.2) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.05) !important;
+        transition: all 0.3s ease !important;
+        height: 32px !important;
+        outline: none !important;
 
         &:hover {
-          border-color: var(--primary-color);
+          border-color: var(--tech-primary) !important;
+          box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.15) !important;
         }
 
         &.is-focus {
-          border-color: var(--primary-color);
-          box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
+          border-color: var(--tech-primary) !important;
+          box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.15) !important;
+          outline: none !important;
         }
 
         .dark-mode & {
-          background: #374151;
-          border-color: #4b5563;
+          background: rgba(51, 65, 85, 0.8) !important;
+          border-color: rgba(var(--secondary-color-rgb), 0.3) !important;
         }
       }
 
       :deep(.el-input__inner) {
-        height: 30px;
-        line-height: 30px;
-        font-size: 14px;
-        color: #374151;
+        outline: none !important;
+        border: none !important;
+        box-shadow: none !important;
+
+        &:focus {
+          outline: none !important;
+          border: none !important;
+          box-shadow: none !important;
+        }
+      }
+
+      :deep(.el-select__wrapper) {
+        background: rgba(255, 255, 255, 0.8) !important;
+        border: 1px solid rgba(var(--primary-color-rgb), 0.2) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.05) !important;
+        transition: all 0.3s ease !important;
+        height: 32px !important;
+        outline: none !important;
+
+        &:hover {
+          border-color: var(--tech-primary) !important;
+          box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.15) !important;
+        }
+
+        &.is-focus {
+          border-color: var(--tech-primary) !important;
+          box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.15) !important;
+          outline: none !important;
+        }
 
         .dark-mode & {
-          color: #f9fafb;
+          background: rgba(51, 65, 85, 0.8) !important;
+          border-color: rgba(var(--secondary-color-rgb), 0.3) !important;
         }
       }
 
-      :deep(.el-input__prefix) {
-        .search-icon {
-          color: #9ca3af;
-          font-size: 14px;
-          transition: color 0.2s ease;
-        }
-      }
+      :deep(.el-select__input) {
+        outline: none !important;
+        border: none !important;
+        box-shadow: none !important;
 
-      &:hover :deep(.el-input__prefix) .search-icon {
-        color: var(--primary-color);
+        &:focus {
+          outline: none !important;
+          border: none !important;
+          box-shadow: none !important;
+        }
       }
     }
 
-    &.date-filters {
-      display: flex;
-      gap: 8px;
-      width: 240px !important;
-
-      .year-select,
-      .month-select {
-        flex: 1;
-
-        :deep(.el-input__wrapper) {
-          border-radius: 6px;
-          height: 32px;
-          border: 1px solid #d1d5db;
-          background: white;
-          transition: all 0.2s ease;
-          box-shadow: none;
-
-          &:hover {
-            border-color: var(--primary-color);
-          }
-
-          &.is-focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
-          }
-
-          .dark-mode & {
-            background: #374151;
-            border-color: #4b5563;
-          }
-        }
-
-        :deep(.el-input__inner) {
-          height: 30px;
-          line-height: 30px;
-          font-size: 14px;
-          color: #374151;
-
-          .dark-mode & {
-            color: #f9fafb;
-          }
-        }
-      }
+    .search-icon {
+      color: var(--tech-primary);
     }
   }
 }
@@ -701,32 +726,97 @@ onMounted(() => {
 // Books List
 .books-list {
   display: grid;
+  gap: 24px;
   grid-template-columns: 1fr;
-  gap: 16px;
   margin-bottom: 40px;
 }
 
 // Book Item
 .book-item {
-  padding: 25px;
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.3s ease;
-  animation: fadeInUp 0.5s ease-out;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(var(--primary-color-rgb), 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
   cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(var(--primary-color-rgb), 0.08);
 
   .dark-mode & {
-    background: #2d3748;
-    border-color: #4a5568;
-    color: #f7fafc;
+    background: rgba(30, 41, 59, 0.95);
+    border-color: rgba(var(--secondary-color-rgb), 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  // 科技风左边框
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--tech-primary), var(--tech-secondary), var(--tech-accent));
+    opacity: 0.6;
+    transition: all 0.3s ease;
+  }
+
+  // 顶部装饰线
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(var(--primary-color-rgb), 0.3) 20%,
+      rgba(var(--primary-color-rgb), 0.5) 50%,
+      rgba(var(--primary-color-rgb), 0.3) 80%,
+      transparent 100%);
+    transition: all 0.3s ease;
   }
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
-    border-color: rgba(var(--primary-color-rgb), 0.3);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(var(--primary-color-rgb), 0.15);
+    border-color: rgba(var(--primary-color-rgb), 0.4);
+
+    .dark-mode & {
+      box-shadow: 0 12px 40px rgba(var(--secondary-color-rgb), 0.2);
+      border-color: rgba(var(--secondary-color-rgb), 0.4);
+    }
+
+    &::before {
+      opacity: 1;
+      width: 6px;
+      background: linear-gradient(180deg, var(--tech-primary), var(--tech-secondary), var(--tech-accent), var(--tech-pink));
+    }
+
+    &::after {
+      height: 2px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(var(--primary-color-rgb), 0.8) 20%,
+        rgba(var(--primary-color-rgb), 0.9) 50%,
+        rgba(var(--primary-color-rgb), 0.8) 80%,
+        transparent 100%);
+    }
+
+    .book-date {
+      background: rgba(var(--primary-color-rgb), 0.15);
+      border-color: rgba(var(--primary-color-rgb), 0.4);
+      color: var(--tech-primary);
+
+      .dark-mode & {
+        background: rgba(var(--secondary-color-rgb), 0.2);
+        border-color: rgba(var(--secondary-color-rgb), 0.5);
+        color: var(--tech-secondary);
+      }
+    }
   }
 
   .book-meta {
@@ -749,9 +839,21 @@ onMounted(() => {
     }
 
     .book-date {
-      color: var(--primary-color);
-      font-weight: 600;
-      font-size: 0.9rem;
+      color: var(--tech-primary);
+      font-size: 0.95rem;
+      font-weight: 500;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+      padding: 8px 16px;
+      background: rgba(var(--primary-color-rgb), 0.08);
+      border-radius: 12px;
+      border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+      transition: all 0.3s ease;
+
+      .dark-mode & {
+        color: var(--tech-secondary);
+        background: rgba(var(--secondary-color-rgb), 0.1);
+        border-color: rgba(var(--secondary-color-rgb), 0.3);
+      }
     }
 
     .translated-tag {
@@ -917,30 +1019,11 @@ onMounted(() => {
 }
 
 // Animations
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+// 使用 animate.css 提供的动画，无需自定义 keyframes
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+// spin 动画已在全局样式中定义
 
-@keyframes loadingDots {
-  0%, 80%, 100% {
-    transform: scale(0);
-  }
-  40% {
-    transform: scale(1);
-  }
-}
+// loadingDots 动画已在全局样式中定义
 
 // Responsive
 @media (max-width: 768px) {

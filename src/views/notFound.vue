@@ -1,8 +1,8 @@
 <template>
   <div class="not-found-container">
     <div class="glass-effect not-found-content">
-      <h1 class="textGlow">404</h1>
-      <div class="molecule-container moleculeRotate">
+      <h1 class="animate__animated animate__pulse animate__infinite">404</h1>
+      <div class="molecule-container animate__animated animate__rotateIn animate__infinite animate__slow">
         <div class="molecule"></div>
       </div>
       <h2>{{ $t('global.notFoundTitle') }}</h2>
@@ -26,7 +26,7 @@
   align-items: center;
   padding: 2rem;
   background: radial-gradient(circle, var(--dark-color) 0%, darken(#1A1A2E, 10%) 100%);
-  
+
   .dark-mode & {
     background: radial-gradient(circle, var(--dark-background) 0%, darken(#121225, 10%) 100%);
   }
@@ -38,7 +38,7 @@
   max-width: 600px;
   position: relative;
   overflow: hidden;
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -47,7 +47,7 @@
     right: 0;
     bottom: 0;
     background: linear-gradient(
-      45deg, 
+      45deg,
       rgba(0, 184, 169, 0.05) 0%,
       rgba(127, 68, 248, 0.05) 100%
     );
@@ -87,13 +87,13 @@ p {
   width: 100%;
   height: 100%;
   position: relative;
-  
+
   &::before, &::after {
     content: '';
     position: absolute;
     border-radius: 50%;
   }
-  
+
   &::before {
     width: 60px;
     height: 60px;
@@ -101,7 +101,7 @@ p {
     left: 10px;
     background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
   }
-  
+
   &::after {
     width: 10px;
     height: 10px;
@@ -125,7 +125,7 @@ p {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -141,16 +141,15 @@ p {
     );
     transition: all 0.6s;
   }
-  
+
   &:hover {
     background-color: darken(#00B8A9, 5%);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    
+
     &::before {
       left: 100%;
     }
   }
 }
-</style> 
- 
+</style>

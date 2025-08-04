@@ -75,10 +75,34 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: 'news' }
   },
   {
+    path: '/news/:id',
+    name: 'DynamicDetail',
+    component: () => import('../views/news/dynamicDetail.vue'),
+    meta: { title: 'dynamicDetail' }
+  },
+  {
     path: '/facilities',
     name: 'Facilities',
     component: () => import('../views/facilities/facilities.vue'),
     meta: { title: 'facilities' }
+  },
+  {
+    path: '/facilities/instruments/:id',
+    name: 'InstrumentDetail',
+    component: () => import('../views/facilities/instrumentDetail.vue'),
+    meta: { title: 'instrumentDetail' }
+  },
+  {
+    path: '/notices',
+    name: 'Notices',
+    component: () => import('../views/notices/notices.vue'),
+    meta: { title: 'notices' }
+  },
+  {
+    path: '/notices/:id',
+    name: 'NoticeDetail',
+    component: () => import('../views/notices/noticeDetail.vue'),
+    meta: { title: 'noticeDetail' }
   },
   {
     path: '/join',

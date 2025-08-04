@@ -83,19 +83,8 @@
   }
 }
 
-// 呼吸霓虹文字效果
-@keyframes textNeonGlow {
-  0%, 100% {
-    text-shadow: 0 0 5px var(--primary-color),
-                 0 0 10px var(--primary-color),
-                 0 0 15px var(--primary-color);
-  }
-  50% {
-    text-shadow: 0 0 10px var(--primary-color),
-                 0 0 20px var(--primary-color),
-                 0 0 30px var(--primary-color);
-  }
-}
+// 呼吸霓虹文字效果 - 已被 animate.css 的 pulse 动画替代
+// textNeonGlow -> animate__pulse animate__infinite
 
 // 科技感数据流动画
 @keyframes dataFlow {
@@ -110,71 +99,15 @@
   }
 }
 
-// 分子旋转动画
-@keyframes moleculeRotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+// 分子旋转动画 - 已被 animate.css 的 rotateIn 动画替代
+// moleculeRotate -> animate__rotateIn animate__infinite
 
-// 渐入效果
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-// 滑入效果
-@keyframes slideInUp {
-  from {
-    transform: translateY(50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    transform: translateX(-50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    transform: translateX(50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-// 缩放效果
-@keyframes zoomIn {
-  from {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
+// 这些基础动画已被 animate.css 替代，无需重复定义
+// fadeIn -> animate__fadeIn
+// slideInUp -> animate__slideInUp  
+// slideInLeft -> animate__slideInLeft
+// slideInRight -> animate__slideInRight
+// zoomIn -> animate__zoomIn
 
 // 流体动画
 @keyframes fluidAnimation {
@@ -195,37 +128,35 @@
   }
 }
 
-// 动画工具类
-.fadeIn {
-  animation: fadeIn 0.8s ease forwards;
+// 工具类已被 animate.css 类替代:
+// .fadeIn -> .animate__animated .animate__fadeIn
+// .slideInUp -> .animate__animated .animate__slideInUp
+// .slideInLeft -> .animate__animated .animate__slideInLeft  
+// .slideInRight -> .animate__animated .animate__slideInRight
+// .zoomIn -> .animate__animated .animate__zoomIn
+// .textGlow -> .animate__animated .animate__pulse .animate__infinite
+// .moleculeRotate -> .animate__animated .animate__rotateIn .animate__infinite
+
+// 全局spin动画 - 用于加载器等通用场景
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.slideInUp {
-  animation: slideInUp 0.8s ease forwards;
-}
-
-.slideInLeft {
-  animation: slideInLeft 0.8s ease forwards;
-}
-
-.slideInRight {
-  animation: slideInRight 0.8s ease forwards;
-}
-
-.zoomIn {
-  animation: zoomIn 0.8s ease forwards;
+// 全局加载点动画 - 用于加载状态
+@keyframes loadingDots {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .neonPulse {
   animation: neonPulse 2s infinite;
-}
-
-.textGlow {
-  animation: textNeonGlow 2s infinite;
-}
-
-.moleculeRotate {
-  animation: moleculeRotate 10s linear infinite;
 }
 
 .dataFlow {

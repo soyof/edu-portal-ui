@@ -352,10 +352,7 @@ onMounted(() => {
     font-size: clamp(2.5rem, 5vw, 4rem);
     margin-bottom: 1.5rem;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
     position: relative;
     display: inline-block;
 
@@ -376,10 +373,7 @@ onMounted(() => {
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      background: radial-gradient(circle, var(--primary-color) 0%, var(--accent-color) 100%);
       filter: blur(25px);
       opacity: 0.3;
       z-index: -1;
@@ -422,10 +416,7 @@ onMounted(() => {
         display: block;
         font-size: 2.5rem;
         font-weight: 700;
-        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: var(--primary-color);
         margin-bottom: 0.5rem;
       }
 
@@ -573,10 +564,7 @@ onMounted(() => {
       }
 
       .title-text {
-        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: var(--primary-color);
         position: relative;
       }
 
@@ -808,12 +796,8 @@ onMounted(() => {
   .empty-title {
     font-size: 2rem;
     margin-bottom: 1rem;
-    color: var(--text-color);
+    color: var(--primary-color);
     font-weight: 700;
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
 
   .empty-text {
@@ -1080,16 +1064,7 @@ onMounted(() => {
   }
 }
 
-@keyframes loadingDots {
-  0%, 80%, 100% {
-    transform: scale(0.8);
-    opacity: 0.5;
-  }
-  40% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-}
+// loadingDots 动画已在全局样式中定义
 
 @keyframes sparkle {
   0%, 100% {

@@ -185,6 +185,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElTooltip } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import service from '@/utils/services'
+import { useLanguageText } from '@/hooks/useResearchSearch'
 
 // 论文响应接口
 export interface PaperResponse {
@@ -201,7 +202,8 @@ export interface PaperResponse {
 
 const route = useRoute()
 const router = useRouter()
-const { t, locale } = useI18n()
+const { t } = useI18n()
+const { getCurrentLanguageText } = useLanguageText()
 
 // 响应式数据
 const paper = ref<PaperResponse | null>(null)
@@ -211,24 +213,17 @@ const error = ref(false)
 // 计算属性
 const currentTitle = computed(() => {
   if (!paper.value) return ''
-  // 使用全局语言设置，不再需要本地切换
-  return locale.value === 'en' && paper.value.titleEn
-    ? paper.value.titleEn
-    : paper.value.title
+  return getCurrentLanguageText(paper.value, 'title')
 })
 
 const currentAbstract = computed(() => {
   if (!paper.value) return ''
-  return locale.value === 'en' && paper.value.abstractEn
-    ? paper.value.abstractEn
-    : paper.value.abstract
+  return getCurrentLanguageText(paper.value, 'abstract')
 })
 
 const currentContent = computed(() => {
   if (!paper.value) return ''
-  return locale.value === 'en' && paper.value.contentEn
-    ? paper.value.contentEn
-    : paper.value.content
+  return getCurrentLanguageText(paper.value, 'content')
 })
 
 // API请求方法
@@ -683,10 +678,7 @@ onMounted(() => {
 }
 
 // 动画效果
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+// spin 动画已在全局样式中定义
 
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }

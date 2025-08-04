@@ -11,8 +11,19 @@
   --dark-color: @dark-color;
   --light-color: @light-color;
   
+  // 科技风渐变色变量
+  --tech-primary: @primary-color;
+  --tech-secondary: @secondary-color;
+  --tech-accent: @accent-color;
+  --tech-purple: #8b5cf6;
+  --tech-pink: #ec4899;
+  
   // RGB 格式的颜色变量，用于透明度调整
   --primary-color-rgb: 0, 184, 169; // @primary-color 的 RGB 值
+  --secondary-color-rgb: 0, 224, 199; // @secondary-color 的 RGB 值
+  --accent-color-rgb: 127, 68, 248; // @accent-color 的 RGB 值
+  --tech-purple-rgb: 139, 92, 246; // #8b5cf6 的 RGB 值
+  --tech-pink-rgb: 236, 72, 153; // #ec4899 的 RGB 值
   
   --font-family: @font-family-en;
   --font-family-cn: @font-family-cn;
@@ -38,8 +49,19 @@
   --secondary-color: @purple-theme-light;
   --accent-color: @purple-theme-accent;
   
+  // 科技风渐变色变量
+  --tech-primary: @purple-theme;
+  --tech-secondary: @purple-theme-light;
+  --tech-accent: @purple-theme-accent;
+  --tech-purple: #8b5cf6;
+  --tech-pink: #ec4899;
+  
   // RGB 格式的颜色变量
   --primary-color-rgb: 70, 38, 125; // @purple-theme 的 RGB 值
+  --secondary-color-rgb: 105, 56, 181; // @purple-theme-light 的 RGB 值
+  --accent-color-rgb: 138, 101, 199; // @purple-theme-accent 的 RGB 值
+  --tech-purple-rgb: 139, 92, 246; // #8b5cf6 的 RGB 值
+  --tech-pink-rgb: 236, 72, 153; // #ec4899 的 RGB 值
   
   // 在暗黑模式下的特殊处理
   &.dark-mode {
@@ -47,14 +69,34 @@
     --secondary-color: @purple-theme;
     --accent-color: @purple-theme-accent;
     
+    // 科技风渐变色变量 - 暗色模式
+    --tech-primary: @purple-theme-light;
+    --tech-secondary: @purple-theme-accent;
+    --tech-accent: @purple-theme;
+    
     // RGB 格式的颜色变量
     --primary-color-rgb: 105, 56, 181; // @purple-theme-light 的 RGB 值
+    --secondary-color-rgb: 138, 101, 199; // @purple-theme-accent 的 RGB 值
+    --accent-color-rgb: 70, 38, 125; // @purple-theme 的 RGB 值
   }
   
   // 调整边框和特效颜色
   .glass-effect {
     border-color: rgba(70, 38, 125, 0.2);
   }
+}
+
+// 通用暗色模式样式（非紫色主题）
+.dark-mode:not(.purple-theme) {
+  // 科技风渐变色变量 - 暗色模式
+  --tech-primary: @dark-primary-color;
+  --tech-secondary: @dark-secondary-color;
+  --tech-accent: @dark-accent-color;
+  
+  // RGB 格式的颜色变量 - 暗色模式
+  --primary-color-rgb: 0, 224, 199; // @dark-primary-color 的 RGB 值
+  --secondary-color-rgb: 0, 184, 169; // @dark-secondary-color 的 RGB 值
+  --accent-color-rgb: 157, 78, 255; // @dark-accent-color 的 RGB 值
   
   // Element Plus 按钮样式覆盖
   .el-button--primary {
@@ -426,5 +468,45 @@ body {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+// 兼容性工具类 - 渐变文字效果的兼容性解决方案
+.gradient-text {
+  color: var(--primary-color);
+  /* 支持渐变文字的浏览器使用渐变效果 */
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* 只在支持的浏览器中使用透明色 */
+  @supports (-webkit-background-clip: text) {
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* 不支持的浏览器继续显示主色调 */
+  @supports not (-webkit-background-clip: text) {
+    background: none;
+    color: var(--primary-color);
+  }
+}
+
+.gradient-text-primary {
+  .gradient-text();
+}
+
+.gradient-text-secondary {
+  color: var(--secondary-color);
+  background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  @supports (-webkit-background-clip: text) {
+    -webkit-text-fill-color: transparent;
+  }
+  
+  @supports not (-webkit-background-clip: text) {
+    background: none;
+    color: var(--secondary-color);
+  }
 } 
  

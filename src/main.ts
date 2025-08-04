@@ -5,6 +5,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import router from './router'
 import i18n from './i18n'
 import App from './App.vue'
+import 'animate.css'
 
 // 导入样式
 import './styles/index.less'

@@ -195,8 +195,9 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElTooltip } from 'element-plus'
-import { useI18n } from 'vue-i18n'
+
 import service from '@/utils/services'
+import { useLanguageText } from '@/hooks/useResearchSearch'
 
 // 著作响应接口
 export interface BookResponse {
@@ -222,7 +223,7 @@ const getBookDetail = (id: string): Promise<BookResponse> => {
 // 路由和国际化
 const route = useRoute()
 const router = useRouter()
-const { locale } = useI18n()
+const { getCurrentLanguageText } = useLanguageText()
 
 // 响应式数据
 const loading = ref(true)
@@ -232,22 +233,22 @@ const book = ref<BookResponse | null>(null)
 // 计算属性
 const currentTitle = computed(() => {
   if (!book.value) return ''
-  return locale.value === 'en' && book.value.titleEn ? book.value.titleEn : book.value.title
+  return getCurrentLanguageText(book.value, 'title')
 })
 
 const currentAuthor = computed(() => {
   if (!book.value) return ''
-  return locale.value === 'en' && book.value.authorEn ? book.value.authorEn : book.value.author
+  return getCurrentLanguageText(book.value, 'author')
 })
 
 const currentAbstract = computed(() => {
   if (!book.value) return ''
-  return locale.value === 'en' && book.value.abstractEn ? book.value.abstractEn : book.value.abstract
+  return getCurrentLanguageText(book.value, 'abstract')
 })
 
 const currentContent = computed(() => {
   if (!book.value) return ''
-  return locale.value === 'en' && book.value.contentEn ? book.value.contentEn : book.value.content
+  return getCurrentLanguageText(book.value, 'content')
 })
 
 // 方法
@@ -730,10 +731,7 @@ onMounted(() => {
 }
 
 // 动画效果
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+// spin 动画已在全局样式中定义
 
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
