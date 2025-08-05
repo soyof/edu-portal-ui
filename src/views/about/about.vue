@@ -319,27 +319,13 @@ onMounted(() => {
         .title-text {
           font-size: clamp(2.5rem, 6vw, 4.5rem);
           font-weight: 700;
-          background: linear-gradient(135deg, #00b8a9, #7f44f8, #00e0c7);
-          background-size: 200% 200%;
-          background-clip: text;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: gradientShift 4s ease-in-out infinite;
+          color: var(--primary-color);
           position: relative;
           z-index: 2;
-        }
 
-        .title-glow {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: linear-gradient(135deg, #00b8a9, #7f44f8);
-          filter: blur(20px);
-          opacity: 0.3;
-          z-index: 1;
-          animation: glowPulse 3s ease-in-out infinite;
+          .dark-mode & {
+            color: #4fd1c7;
+          }
         }
       }
 
@@ -826,16 +812,6 @@ onMounted(() => {
 @keyframes waveMove {
   0%, 100% { transform: translateX(0px); }
   50% { transform: translateX(-20px); }
-}
-
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-@keyframes glowPulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.6; }
 }
 
 @keyframes lineExpand {

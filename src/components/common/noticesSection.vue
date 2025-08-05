@@ -4,7 +4,25 @@
       <h2 class="section-title tech-line">{{ $t('home.announcements') }}</h2>
       <div class="announcements-container">
         <div v-if="loadingAnnouncements" class="loading-container">
-          <el-skeleton :rows="3" animated />
+          <div v-for="i in 5" :key="i" class="announcement-skeleton">
+            <el-skeleton animated>
+              <template #template>
+                <div class="skeleton-announcement-item">
+                  <!-- 模拟图标 -->
+                  <el-skeleton-item variant="circle" style="width: 48px; height: 48px; margin-right: 16px;" />
+                  <div class="skeleton-content">
+                    <!-- 模拟标题 -->
+                    <el-skeleton-item variant="h3" style="width: 80%; margin-bottom: 8px;" />
+                    <!-- 模拟日期和类型 -->
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                      <el-skeleton-item variant="text" style="width: 80px;" />
+                      <el-skeleton-item variant="text" style="width: 60px;" />
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </el-skeleton>
+          </div>
         </div>
         <template v-else-if="announcements.length > 0">
           <AnnouncementItem
@@ -235,14 +253,42 @@ defineExpose({
 }
 
 .loading-container {
-  padding: 40px 20px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: var(--border-radius-md);
-  border: 1px solid rgba(var(--primary-color-rgb), 0.1);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  position: relative;
+  z-index: 1;
 
-  .dark-mode & {
-    background: rgba(26, 26, 46, 0.8);
-    border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+  .announcement-skeleton {
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: var(--border-radius-md);
+    border: 1px solid rgba(var(--primary-color-rgb), 0.1);
+    backdrop-filter: blur(10px);
+
+    .dark-mode & {
+      background: rgba(26, 26, 46, 0.8);
+      border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+    }
+
+    .skeleton-announcement-item {
+      display: flex;
+      align-items: flex-start;
+
+      .skeleton-content {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+
+    .announcement-skeleton {
+      padding: 20px;
+    }
   }
 }
 

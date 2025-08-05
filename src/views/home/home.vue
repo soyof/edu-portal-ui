@@ -3,6 +3,18 @@
     <!-- 粒子背景 -->
     <div ref="particleContainer" class="particle-background"></div>
 
+    <!-- 全局加载提示 -->
+    <div v-if="globalLoading" class="global-loading-overlay">
+      <div class="loading-content">
+        <div class="loading-spinner">
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+        </div>
+        <p class="loading-text">{{ $t('common.loading') || '正在加载...' }}</p>
+      </div>
+    </div>
+
     <!-- 英雄区域 -->
     <section class="hero-section">
       <div class="container">
@@ -25,13 +37,13 @@
     </section>
 
     <!-- 团队简介区域 -->
-    <TeamIntroSection />
+    <TeamIntroSection ref="teamIntroRef" />
 
     <!-- 公告通知区域 -->
-    <NoticesSection />
+    <NoticesSection ref="noticesRef" />
 
     <!-- 最新动态区域 -->
-    <NewsSection />
+    <NewsSection ref="newsRef" />
   </div>
 </template>
 
@@ -68,6 +80,22 @@ const particleColor = computed(() => {
 // 粒子背景和DNA模型的引用
 const particleContainer = ref<HTMLElement | null>(null)
 const dnaModel = ref<HTMLElement | null>(null)
+
+// 子组件引用
+const teamIntroRef = ref()
+const noticesRef = ref()
+const newsRef = ref()
+
+// 全局加载状态
+const globalLoading = ref(true)
+
+// 检查所有模块加载完成
+const checkAllModulesLoaded = () => {
+  // 等待一段时间后隐藏全局加载状态，确保各个模块有时间显示骨架屏
+  setTimeout(() => {
+    globalLoading.value = false
+  }, 800) // 800ms后隐藏全局加载状态
+}
 
 // 粒子系统相关变量
 let particleSystem: THREE.Scene | null = null
@@ -213,6 +241,9 @@ onMounted(() => {
 
   // 初始化动画
   initAnimations()
+
+  // 检查模块加载状态
+  checkAllModulesLoaded()
 })
 </script>
 
@@ -380,6 +411,93 @@ section {
   margin-top: 40px;
   position: relative;
   z-index: 1;
+}
+
+// 全局加载提示样式
+.global-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease-out;
+
+  .dark-mode & {
+    background: rgba(18, 18, 37, 0.95);
+  }
+
+  .purple-theme & {
+    background: rgba(255, 255, 255, 0.95);
+
+    &.dark-mode {
+      background: rgba(18, 18, 37, 0.95);
+    }
+  }
+
+  .loading-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .loading-spinner {
+    position: relative;
+    width: 60px;
+    height: 60px;
+
+    .spinner-ring {
+      position: absolute;
+      border: 3px solid transparent;
+      border-top: 3px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1.2s linear infinite;
+
+      &:nth-child(1) {
+        width: 60px;
+        height: 60px;
+        animation-delay: 0s;
+      }
+
+      &:nth-child(2) {
+        width: 45px;
+        height: 45px;
+        top: 7.5px;
+        left: 7.5px;
+        animation-delay: -0.4s;
+        border-top-color: var(--secondary-color);
+      }
+
+      &:nth-child(3) {
+        width: 30px;
+        height: 30px;
+        top: 15px;
+        left: 15px;
+        animation-delay: -0.8s;
+        border-top-color: var(--accent-color);
+      }
+    }
+  }
+
+  .loading-text {
+    color: var(--text-color-primary);
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+    opacity: 0.8;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 }
 
 // 动画效果

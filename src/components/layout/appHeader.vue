@@ -12,7 +12,7 @@
           </h1>
         </router-link>
       </div>
-      
+
       <!-- 桌面端导航 -->
       <nav class="desktop-nav">
         <ul class="nav-list">
@@ -23,14 +23,14 @@
           </li>
         </ul>
       </nav>
-      
+
       <!-- 功能按钮区 -->
       <div class="header-actions">
         <!-- 语言切换 -->
-        <el-dropdown @command="handleLanguageChange" class="lang-dropdown">
+        <el-dropdown class="lang-dropdown" @command="handleLanguageChange">
           <span class="el-dropdown-link">
             <span class="lang-text">{{ currentLanguage === 'zh' ? '中文' : 'EN' }}</span>
-            <el-icon class="el-icon--right"><arrow-down /></el-icon>
+            <el-icon class="el-icon--right"><ArrowDown /></el-icon>
           </span>
           <template #dropdown>
             <el-dropdown-menu>
@@ -39,9 +39,9 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        
+
         <!-- 主题颜色切换 -->
-        <el-dropdown @command="handleThemeColorChange" class="theme-color-dropdown">
+        <el-dropdown class="theme-color-dropdown" @command="handleThemeColorChange">
           <span class="el-dropdown-link color-switch">
             <span class="color-dot" :class="currentColorTheme"></span>
           </span>
@@ -62,20 +62,20 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        
+
         <!-- 暗黑/明亮模式切换 -->
         <div class="theme-switch" @click="toggleTheme">
-          <el-icon v-if="isDarkMode"><moon /></el-icon>
-          <el-icon v-else><sunny /></el-icon>
+          <el-icon v-if="isDarkMode"><Moon /></el-icon>
+          <el-icon v-else><Sunny /></el-icon>
         </div>
-        
+
         <!-- 移动端菜单按钮 -->
         <div class="mobile-toggle" @click="toggleMobileMenu">
           <span :class="['hamburger', { 'open': isMobileMenuOpen }]"></span>
         </div>
       </div>
     </div>
-    
+
     <!-- 移动端导航菜单 -->
     <transition name="slide-down">
       <div v-show="isMobileMenuOpen" class="mobile-menu glass-effect">
@@ -117,7 +117,7 @@ const currentColorTheme = computed(() => themeStore.currentTheme === 'purple' ? 
 
 // 导航项
 const navItems = [
-  { key: 'home', route: '/' },
+  { key: 'home', route: '/home' },
   { key: 'about', route: '/about' },
   { key: 'members', route: '/members' },
   { key: 'research', route: '/research' },
@@ -169,10 +169,10 @@ onMounted(() => {
   window.addEventListener('resize', checkMobileView)
   checkScroll() // 初始检查
   checkMobileView() // 初始检查移动视图
-  
+
   // 初始化主题
   themeStore.initTheme()
-  
+
   // 初始化语言
   const lang = languageStore.currentLanguage
   if (lang) {
@@ -195,29 +195,29 @@ onUnmounted(() => {
   z-index: 1000;
   transition: all 0.3s ease;
   padding: 20px 0;
-  
+
   .dark-mode & {
     background: rgba(18, 18, 37, 0.7);
   }
-   
+
   &.header-scrolled {
     backdrop-filter: --glass-blur;
     background: rgba(255, 255, 255, 0.6);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 10px 0;
-    
+
     .logo h1 {
       font-size: 1.4rem;
-      
+
       @media (max-width: @tablet-breakpoint) {
         font-size: 1.2rem;
       }
     }
-    
+
     .logo-icon {
       transform: scale(0.8);
-      
+
       @media (max-width: @tablet-breakpoint) {
         transform: scale(0.7);
       }
@@ -237,7 +237,7 @@ onUnmounted(() => {
   align-items: center;
   flex-wrap: nowrap; // 防止换行
   min-height: 60px;
-  
+
   @media (max-width: @tablet-breakpoint) {
     min-height: 50px;
   }
@@ -252,7 +252,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   text-decoration: none;
-  
+
   h1 {
     font-size: 1.8rem;
     margin: 0;
@@ -262,16 +262,16 @@ onUnmounted(() => {
     transition: all 0.3s ease;
     white-space: nowrap;
     mix-blend-mode: difference;
-    
+
     @media (max-width: @tablet-breakpoint) {
       font-size: 1.4rem;
       margin-left: 5px;
     }
-    
+
     @media (max-width: @mobile-breakpoint) {
       font-size: 1.2rem;
     }
-    
+
     .dark-mode & {
       color: rgba(255, 255, 255, 0.95);
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
@@ -284,39 +284,39 @@ onUnmounted(() => {
   height: 40px;
   position: relative;
   transition: all 0.3s ease;
-  
+
   @media (max-width: @tablet-breakpoint) {
     width: 35px;
     height: 35px;
   }
-  
+
   @media (max-width: @mobile-breakpoint) {
     width: 30px;
     height: 30px;
   }
-  
+
   .dna-helix {
     position: absolute;
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    
+
     &.dna-strand-1 {
       border-left: 3px solid var(--primary-color);
       border-right: 3px solid var(--accent-color);
       animation: dnaRotate 5s linear infinite;
-      
+
       .purple-theme & {
         border-left: 3px solid var(--primary-color);
         border-right: 3px solid var(--accent-color);
       }
     }
-    
+
     &.dna-strand-2 {
       border-top: 3px solid var(--primary-color);
       border-bottom: 3px solid var(--accent-color);
       animation: dnaRotate 5s linear infinite reverse;
-      
+
       .purple-theme & {
         border-top: 3px solid var(--primary-color);
         border-bottom: 3px solid var(--accent-color);
@@ -329,27 +329,27 @@ onUnmounted(() => {
   @media (max-width: @tablet-breakpoint) {
     display: none;
   }
-  
+
   margin: 0 10px; // 增加两侧外边距
   flex-grow: 1; // 允许导航区域伸缩
   display: flex;
   justify-content: center; // 居中导航项
-  
+
   .nav-list {
     display: flex;
     flex-wrap: nowrap; // 防止换行
     list-style: none;
     margin: 0;
     padding: 0;
-    
+
     li {
       margin: 0 8px; // 减少间距以适应更多项
       position: relative;
-      
+
       @media (max-width: 1100px) {
         margin: 0 5px; // 在较小屏幕上进一步减少间距
       }
-      
+
       a {
         text-decoration: none;
         color: var(--dark-color);
@@ -359,23 +359,23 @@ onUnmounted(() => {
         transition: all 0.3s ease;
         white-space: nowrap;
         padding: 0 5px; // 增加水平内边距
-        
+
         @media (max-width: 1100px) {
           font-size: 0.95rem; // 在较小屏幕上进一步减小字号
         }
-        
+
         .dark-mode & {
           color: rgba(255, 255, 255, 0.9);
         }
-        
+
         &:hover, &.active {
           color: var(--primary-color);
-          
+
           &::after {
             width: 100%;
           }
         }
-        
+
         &::after {
           content: '';
           position: absolute;
@@ -387,13 +387,13 @@ onUnmounted(() => {
           transition: width 0.3s ease;
         }
       }
-      
+
       &:hover::before,
       &:hover::after {
         opacity: 1;
         transform: translateY(0);
       }
-      
+
       &::before,
       &::after {
         content: '';
@@ -405,13 +405,13 @@ onUnmounted(() => {
         opacity: 0;
         transition: all 0.3s ease;
       }
-      
+
       &::before {
         top: -5px;
         left: 50%;
         transform: translateY(10px);
       }
-      
+
       &::after {
         bottom: -5px;
         right: 50%;
@@ -426,7 +426,7 @@ onUnmounted(() => {
   align-items: center;
   z-index: 1001;
   flex-shrink: 0; // 防止按钮区域缩小
-  
+
   // 语言切换
   .lang-dropdown {
     .el-dropdown-link {
@@ -436,34 +436,34 @@ onUnmounted(() => {
       white-space: nowrap;
       padding: 5px;
       border-radius: 4px;
-      
+
       .lang-text {
         font-size: 0.9rem;
         min-width: 30px;
         text-align: center;
       }
-      
+
       .dark-mode & {
         color: rgba(255, 255, 255, 0.9);
       }
     }
   }
-  
+
   // 颜色主题切换
   .theme-color-dropdown {
     margin-left: 10px;
-    
+
     @media (max-width: @tablet-breakpoint) {
       margin-left: 8px;
     }
-    
+
     .color-switch {
       padding: 5px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    
+
     .color-dot {
       width: 20px;
       height: 20px;
@@ -471,16 +471,16 @@ onUnmounted(() => {
       display: block;
       border: 2px solid #fff;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-      
+
       @media (max-width: @tablet-breakpoint) {
         width: 18px;
         height: 18px;
       }
-      
+
       &.default-theme {
         background: linear-gradient(135deg, @primary-color, @secondary-color);
       }
-      
+
       &.purple-theme {
         background: linear-gradient(135deg, @purple-theme, @purple-theme-light);
       }
@@ -489,11 +489,11 @@ onUnmounted(() => {
     :deep(.el-dropdown-menu) {
       .el-dropdown-menu__item {
         padding: 8px 16px;
-        
+
         &:hover, &:focus {
           background-color: rgba(0, 0, 0, 0.04) !important;
         }
-        
+
         .dark-mode & {
           &:hover, &:focus {
             background-color: rgba(255, 255, 255, 0.08) !important;
@@ -502,29 +502,29 @@ onUnmounted(() => {
       }
     }
   }
-  
+
   // 下拉菜单样式
   .color-option {
     display: flex;
     align-items: center;
-    
+
     .color-dot {
       width: 16px;
       height: 16px;
       border-radius: 50%;
       margin-right: 8px;
       border: 1px solid #ddd;
-      
+
       &.default-theme {
         background: linear-gradient(135deg, @primary-color, @secondary-color);
       }
-      
+
       &.purple-theme {
         background: linear-gradient(135deg, @purple-theme, @purple-theme-light);
       }
     }
   }
-  
+
   .theme-switch {
     margin-left: 10px;
     width: 36px;
@@ -535,29 +535,29 @@ onUnmounted(() => {
     cursor: pointer;
     border-radius: 50%;
     transition: all 0.3s ease;
-    
+
     @media (max-width: @tablet-breakpoint) {
       margin-left: 8px;
       width: 32px;
       height: 32px;
     }
-    
+
     &:hover {
       background: rgba(0, 0, 0, 0.05);
-      
+
       .dark-mode & {
         background: rgba(255, 255, 255, 0.1);
       }
     }
-    
+
     .el-icon {
       font-size: 22px;
       color: var(--dark-color);
-      
+
       @media (max-width: @tablet-breakpoint) {
         font-size: 18px;
       }
-      
+
       .dark-mode & {
         color: rgba(255, 255, 255, 0.9);
       }
@@ -573,29 +573,29 @@ onUnmounted(() => {
   justify-content: center;
   margin-left: 10px;
   cursor: pointer;
-  
+
   @media (max-width: @tablet-breakpoint) {
     display: flex;
     width: 32px;
     height: 32px;
     margin-left: 8px;
   }
-  
+
   .hamburger {
     position: relative;
     width: 20px;
     height: 2px;
     background: var(--dark-color);
     transition: all 0.3s ease;
-    
+
     @media (max-width: @tablet-breakpoint) {
       width: 18px;
     }
-    
+
     .dark-mode & {
       background: rgba(255, 255, 255, 0.9);
     }
-    
+
     &::before,
     &::after {
       content: '';
@@ -604,40 +604,40 @@ onUnmounted(() => {
       height: 2px;
       background: var(--dark-color);
       transition: all 0.3s ease;
-      
+
       @media (max-width: @tablet-breakpoint) {
         width: 18px;
       }
-      
+
       .dark-mode & {
         background: rgba(255, 255, 255, 0.9);
       }
     }
-    
+
     &::before {
       top: -6px;
-      
+
       @media (max-width: @tablet-breakpoint) {
         top: -5px;
       }
     }
-    
+
     &::after {
       bottom: -6px;
-      
+
       @media (max-width: @tablet-breakpoint) {
         bottom: -5px;
       }
     }
-    
+
     &.open {
       background: transparent;
-      
+
       &::before {
         top: 0;
         transform: rotate(45deg);
       }
-      
+
       &::after {
         bottom: 0;
         transform: rotate(-45deg);
@@ -655,24 +655,24 @@ onUnmounted(() => {
   padding: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  
+
   @media (max-width: @tablet-breakpoint) {
     top: 65px; // 减小顶部距离
   }
-  
+
   .dark-mode & {
     background: rgba(26, 26, 46, 0.95);
   }
-  
+
   .mobile-nav-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    
+
     li {
       margin: 15px 0;
       text-align: center;
-      
+
       a {
         font-size: 1.2rem;
         text-decoration: none;
@@ -681,11 +681,11 @@ onUnmounted(() => {
         display: block;
         padding: 10px;
         transition: all 0.3s ease;
-        
+
         .dark-mode & {
           color: rgba(255, 255, 255, 0.9);
         }
-        
+
         &:hover, &.active {
           color: var(--primary-color);
         }
@@ -711,7 +711,7 @@ onUnmounted(() => {
   .header-container {
     padding: 0 5px; // 减少容器内边距
   }
-  
+
   .desktop-nav .nav-list li a {
     padding: 0 3px;
     font-size: 0.9rem;
@@ -723,4 +723,4 @@ onUnmounted(() => {
     font-size: 1.5rem;
   }
 }
-</style> 
+</style>

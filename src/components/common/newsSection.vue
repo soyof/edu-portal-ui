@@ -13,11 +13,14 @@
           >
             <template #template>
               <div class="skeleton-news-item">
-                <el-skeleton-item variant="rect" style="width: 60px; height: 60px; border-radius: 8px;" />
-                <div class="skeleton-content">
-                  <el-skeleton-item variant="h3" style="width: 80%;" />
-                  <el-skeleton-item variant="text" style="width: 100%;" />
-                  <el-skeleton-item variant="text" style="width: 60%;" />
+                <!-- 模拟日期标签 -->
+                <div class="skeleton-date-badge">
+                  <el-skeleton-item variant="rect" style="width: 120px; height: 45px; border-radius: 12px;" />
+                </div>
+                <!-- 模拟标题 -->
+                <div class="skeleton-title">
+                  <el-skeleton-item variant="h3" style="width: 85%; margin-bottom: 8px;" />
+                  <el-skeleton-item variant="text" style="width: 70%;" />
                 </div>
               </div>
             </template>
@@ -261,23 +264,33 @@ defineExpose({
 
 .news-skeleton {
   .skeleton-news-item {
+    position: relative;
+    padding: 35px 30px 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid rgba(var(--primary-color-rgb), 0.08);
+    backdrop-filter: blur(10px);
+    min-height: 200px;
     display: flex;
-    gap: 20px;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: var(--border-radius-md);
-    border: 1px solid rgba(var(--primary-color-rgb), 0.1);
+    flex-direction: column;
+    justify-content: space-between;
 
     .dark-mode & {
-      background: rgba(26, 26, 46, 0.8);
-      border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+      background: rgba(26, 26, 46, 0.9);
+      border: 1px solid rgba(var(--primary-color-rgb), 0.15);
     }
 
-    .skeleton-content {
-      flex: 1;
+    .skeleton-date-badge {
+      position: absolute;
+      top: -20px;
+      left: 30px;
+    }
+
+    .skeleton-title {
+      margin-top: 35px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
   }
 }

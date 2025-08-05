@@ -8,9 +8,20 @@
           <div v-if="loading" class="loading-container">
             <el-skeleton animated>
               <template #template>
-                <el-skeleton-item variant="text" style="width: 100%; margin-bottom: 15px;" />
-                <el-skeleton-item variant="text" style="width: 100%; margin-bottom: 15px;" />
-                <el-skeleton-item variant="text" style="width: 80%; margin-bottom: 15px;" />
+                <div class="team-skeleton-content">
+                  <!-- 模拟段落标题 -->
+                  <el-skeleton-item variant="h3" style="width: 40%; margin-bottom: 20px;" />
+                  <!-- 模拟段落内容 -->
+                  <el-skeleton-item variant="text" style="width: 100%; margin-bottom: 12px;" />
+                  <el-skeleton-item variant="text" style="width: 95%; margin-bottom: 12px;" />
+                  <el-skeleton-item variant="text" style="width: 88%; margin-bottom: 20px;" />
+                  <!-- 模拟第二段 -->
+                  <el-skeleton-item variant="text" style="width: 100%; margin-bottom: 12px;" />
+                  <el-skeleton-item variant="text" style="width: 92%; margin-bottom: 12px;" />
+                  <el-skeleton-item variant="text" style="width: 85%; margin-bottom: 30px;" />
+                  <!-- 模拟按钮 -->
+                  <el-skeleton-item variant="button" style="width: 140px; height: 44px;" />
+                </div>
               </template>
             </el-skeleton>
           </div>
@@ -22,9 +33,9 @@
           </div>
 
           <div class="team-actions">
-            <ViewDetailsButton @click="router.push('/members')">
+            <ViewMoreButton @click="router.push('/members')">
               {{ $t('home.viewTeamMembers') }}
-            </ViewDetailsButton>
+            </ViewMoreButton>
           </div>
         </div>
       </div>
@@ -35,7 +46,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import ViewDetailsButton from './viewDetailsButton.vue'
+import ViewMoreButton from './viewMoreButton.vue'
 import service from '@/utils/services'
 import { useLanguageText } from '@/hooks/useResearchSearch'
 
@@ -216,6 +227,10 @@ onMounted(() => {
   .team-intro-text {
     .loading-container {
       margin-bottom: 30px;
+
+      .team-skeleton-content {
+        padding: 20px 0;
+      }
     }
 
     .content-section {}
@@ -237,7 +252,6 @@ onMounted(() => {
     }
 
     .team-actions {
-      margin-top: 40px;
       text-align: center;
       padding-top: 30px;
       border-top: 1px solid rgba(255, 255, 255, 0.2);

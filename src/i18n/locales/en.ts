@@ -149,6 +149,8 @@ export default {
   notices: {
     title: 'Notices & Announcements',
     subtitle: 'Stay updated with the latest notices and important announcements from our institute',
+    titlePlaceholder: 'Search notice title...',
+    totalNotices: 'Total Notices',
     noticeDetail: 'Notice Details',
     importance: 'Importance Level',
     type: 'Notice Type',
@@ -169,7 +171,7 @@ export default {
     visitLink: 'Visit Link',
     linkUrl: 'Link URL',
     contentPlaceholder: 'Notice Content',
-    contentPlaceholderDesc: 'The detailed content of this notice will be displayed here. Currently, no detailed information is available.'
+    contentPlaceholderDesc: 'No detailed information is available.'
   },
   join: {
     title: 'Join Our Team',

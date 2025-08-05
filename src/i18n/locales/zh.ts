@@ -149,6 +149,8 @@ export default {
   notices: {
     title: '通知公告',
     subtitle: '获取研究所最新通知与重要公告信息',
+    titlePlaceholder: '搜索公告标题...',
+    totalNotices: '总公告数',
     noticeDetail: '通知详情',
     importance: '重要程度',
     type: '通知类型',
@@ -169,7 +171,7 @@ export default {
     visitLink: '访问链接',
     linkUrl: '链接地址',
     contentPlaceholder: '通知详情',
-    contentPlaceholderDesc: '该通知的具体内容将在此显示，目前暂无详细内容信息。'
+    contentPlaceholderDesc: '暂无详细内容信息。'
   },
   join: {
     title: '加入我们',
