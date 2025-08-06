@@ -89,11 +89,11 @@
 
             <div class="filter-item date-filters">
               <el-select
-                v-model="searchFilters.publishYear"
+                v-model="selectedYear"
                 :placeholder="$t('research.selectYear')"
                 clearable
                 class="year-select"
-                @change="handleSearch"
+                @change="handleDateChange"
               >
                 <el-option
                   v-for="year in availableYears"
@@ -106,11 +106,11 @@
 
             <div class="filter-item date-filters">
               <el-select
-                v-model="searchFilters.publishMonth"
+                v-model="selectedMonth"
                 :placeholder="$t('research.selectMonth')"
                 clearable
                 class="month-select"
-                @change="handleSearch"
+                @change="handleDateChange"
               >
                 <el-option
                   v-for="month in availableMonths"
@@ -209,6 +209,7 @@ import { Warning, InfoFilled, Document, Link, Search } from '@element-plus/icons
 import CommonPagination from '@/components/common/commonPagination.vue'
 import service from '@/utils/services'
 import { useLanguageText } from '@/hooks/useResearchSearch'
+import { useDateFilterWithSearch } from '@/hooks/useDateFilter'
 import { formatDate } from '@/utils/utils'
 
 // 通知类型定义
@@ -273,22 +274,12 @@ const searchFilters = ref({
   publishMonth: null as number | null
 })
 
-// 可用年份和月份
-const availableYears = ref<number[]>([])
-const availableMonths = ref([
-  { label: '1月', value: 1 },
-  { label: '2月', value: 2 },
-  { label: '3月', value: 3 },
-  { label: '4月', value: 4 },
-  { label: '5月', value: 5 },
-  { label: '6月', value: 6 },
-  { label: '7月', value: 7 },
-  { label: '8月', value: 8 },
-  { label: '9月', value: 9 },
-  { label: '10月', value: 10 },
-  { label: '11月', value: 11 },
-  { label: '12月', value: 12 }
-])
+// 使用日期筛选hooks
+const dateFilter = useDateFilterWithSearch(() => handleSearch(), {
+  yearRange: 11,
+  enableMonth: true
+})
+const { availableYears, availableMonths, selectedYear, selectedMonth, handleDateChange } = dateFilter
 
 // 字典数据
 const importanceOptions = ref<DictItem[]>([])
@@ -337,15 +328,7 @@ const getTypeLabel = (type: string): string => {
   }
 }
 
-// 获取可用年份
-const fetchAvailableYears = () => {
-  const currentYear = new Date().getFullYear()
-  const years = []
-  for (let year = currentYear; year >= currentYear - 10; year--) {
-    years.push(year)
-  }
-  availableYears.value = years
-}
+// 已移除fetchAvailableYears，使用hooks代替
 
 // 获取通知列表
 const fetchNotices = () => {
@@ -369,13 +352,9 @@ const fetchNotices = () => {
     params.noticeType = searchFilters.value.noticeType
   }
 
-  if (searchFilters.value.publishYear) {
-    params.publishYear = searchFilters.value.publishYear
-  }
-
-  if (searchFilters.value.publishMonth) {
-    params.publishMonth = searchFilters.value.publishMonth
-  }
+  // 合并日期筛选参数
+  const dateParams = dateFilter.getDateFilterParams()
+  Object.assign(params, dateParams)
 
   service.post<PaginationResult<NoticeListResponse>>('/api/notices/list', params)
     .then(response => {
@@ -426,7 +405,6 @@ const handlePageChange = (page: number) => {
 
 // 生命周期
 onMounted(async() => {
-  fetchAvailableYears()
   await fetchDictionaryData()
   fetchNotices()
 })
@@ -545,8 +523,8 @@ onMounted(async() => {
     padding: 0 20px;
 
     .page-title {
-      font-size: 3.2rem;
-      font-weight: 900;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 700;
       margin-bottom: 30px;
       position: relative;
       display: inline-block;

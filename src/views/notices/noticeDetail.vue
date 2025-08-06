@@ -296,8 +296,8 @@ onMounted(() => {
     margin-top: 2rem;
 
     .hero-title {
-      font-size: 2.8rem;
-      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 700;
       background: linear-gradient(135deg,
         rgba(14, 165, 233, 1),
         rgba(59, 130, 246, 1),

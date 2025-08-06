@@ -11,18 +11,22 @@
     ]"
     @click="handleClick"
   >
-    <slot>{{ text }}</slot>
+    <slot>{{ displayText }}</slot>
     <el-icon v-if="showArrow" class="arrow-icon"><ArrowRight /></el-icon>
   </el-button>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { ArrowRight } from '@element-plus/icons-vue'
+import { useI18n } from 'vue-i18n'
 
-defineProps({
+const { t } = useI18n()
+
+const props = defineProps({
   text: {
     type: String,
-    default: '查看更多'
+    default: ''
   },
   to: {
     type: [String, Object],
@@ -47,6 +51,11 @@ defineProps({
 })
 
 const emit = defineEmits(['click'])
+
+// 计算显示文本，如果没有传入text则使用默认国际化文本
+const displayText = computed(() => {
+  return props.text || t('common.viewMore')
+})
 
 const handleClick = () => {
   emit('click')

@@ -320,7 +320,7 @@ onMounted(() => {
 
     .hero-title {
       font-size: 2.8rem;
-      font-weight: 800;
+      font-weight: 700;
       background: linear-gradient(135deg,
         var(--tech-primary),
         var(--tech-secondary),

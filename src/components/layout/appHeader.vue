@@ -123,6 +123,7 @@ const navItems = [
   { key: 'research', route: '/research' },
   { key: 'news', route: '/news' },
   { key: 'facilities', route: '/facilities' },
+  { key: 'tools', route: '/tools' },
   { key: 'join', route: '/join' }
 ]
 

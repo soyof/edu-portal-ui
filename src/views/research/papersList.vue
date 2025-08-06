@@ -58,7 +58,7 @@
                 :placeholder="$t('research.selectYear')"
                 clearable
                 class="year-select"
-                @change="() => handleDateChange(handleSearch)"
+                @change="handleDateChange"
               >
                 <el-option
                   v-for="year in availableYears"
@@ -75,7 +75,7 @@
                 :placeholder="$t('research.selectMonth')"
                 clearable
                 class="month-select"
-                @change="() => handleDateChange(handleSearch)"
+                @change="handleDateChange"
               >
                 <el-option
                   v-for="month in availableMonths"
@@ -164,11 +164,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import service from '@/utils/services'
 import { useResearchSearch, useLanguageText, type BaseSearchFilters } from '@/hooks/useResearchSearch'
+import { useDateFilterWithSearch } from '@/hooks/useDateFilter'
 import CommonPagination from '@/components/common/commonPagination.vue'
 
 // 接口类型定义
@@ -203,15 +204,17 @@ const router = useRouter()
 // 使用公共搜索钩子
 const {
   searchFilters,
-  selectedYear,
-  selectedMonth,
-  availableYears,
-  availableMonths,
   generateCacheKey,
   isCacheValid,
-  handleTitleInput,
-  handleDateChange
+  handleTitleInput
 } = useResearchSearch<BaseSearchFilters>()
+
+// 使用日期筛选hooks
+const dateFilter = useDateFilterWithSearch(() => handleSearch(), {
+  yearRange: 10,
+  enableMonth: true
+})
+const { selectedYear, selectedMonth, availableYears, availableMonths, handleDateChange } = dateFilter
 
 // 使用公共多语言文本钩子
 const { getCurrentLanguageText, formatDate } = useLanguageText()
@@ -227,13 +230,13 @@ const pageSize = ref(15)
 // 缓存相关
 const cache = new Map<string, { data: PaperResponse[], total: number, timestamp: number }>()
 
-// 计算属性
-const totalPages = computed(() => Math.ceil(total.value / pageSize.value))
+// 计算属性已移除totalPages，因为未使用
 
 // 获取论文列表
 const fetchPapers = async(page = 1, filters: BaseSearchFilters = {}) => {
   try {
-    const cacheKey = generateCacheKey(page, filters)
+    const dateParams = dateFilter.getDateFilterParams()
+    const cacheKey = generateCacheKey(page, filters, dateParams)
     const cachedData = cache.get(cacheKey)
 
     // 检查缓存
@@ -248,7 +251,8 @@ const fetchPapers = async(page = 1, filters: BaseSearchFilters = {}) => {
     const requestData = {
       pageNo: page,
       pageSize: pageSize.value,
-      ...filters
+      ...filters,
+      ...dateParams
     }
 
     const response = await service.post<PaginationResult<PaperResponse>>('/api/research/papersList', requestData)
@@ -453,8 +457,8 @@ onMounted(() => {
   }
 
   .page-title {
-    font-size: 3.5rem;
-    font-weight: 800;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
     margin-bottom: 1.5rem;
     background: linear-gradient(135deg,
       var(--tech-primary) 0%,
@@ -970,6 +974,16 @@ onMounted(() => {
     border-color: rgba(var(--primary-color-rgb), 0.3);
   }
 
+  .purple-theme & {
+    background: rgba(139, 92, 246, 0.02);
+    border-color: rgba(139, 92, 246, 0.2);
+
+    .dark-mode & {
+      background: rgba(139, 92, 246, 0.1);
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+  }
+
   .empty-icon {
     font-size: 4rem;
     margin-bottom: 1.5rem;
@@ -985,6 +999,14 @@ onMounted(() => {
     .dark-mode & {
       color: #4fd1c7;
     }
+
+    .purple-theme & {
+      color: #8b5cf6;
+
+      .dark-mode & {
+        color: #a78bfa;
+      }
+    }
   }
 
   .empty-text {
@@ -993,6 +1015,14 @@ onMounted(() => {
 
     .dark-mode & {
       color: #9ca3af;
+    }
+
+    .purple-theme & {
+      color: #6b7280;
+
+      .dark-mode & {
+        color: #9ca3af;
+      }
     }
   }
 }

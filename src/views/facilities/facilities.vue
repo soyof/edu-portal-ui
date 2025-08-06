@@ -202,8 +202,8 @@ onMounted(() => {
     text-align: center;
 
     .page-title {
-      font-size: 3.5rem;
-      font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 700;
       margin-bottom: 20px;
       color: var(--primary-color);
 

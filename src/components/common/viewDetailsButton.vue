@@ -6,7 +6,7 @@
     ]"
     @click="$emit('click')"
   >
-    <span class="btn-text"><slot>{{ text }}</slot></span>
+    <span class="btn-text"><slot>{{ displayText }}</slot></span>
     <span v-if="showIcon" class="btn-icon">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
         height="24"
@@ -20,11 +20,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   text: {
     type: String,
-    default: '查看项目详情'
+    default: ''
   },
   showIcon: {
     type: Boolean,
@@ -37,6 +40,11 @@ const props = defineProps({
 })
 
 defineEmits(['click'])
+
+// 计算显示文本，如果没有传入text则使用默认国际化文本
+const displayText = computed(() => {
+  return props.text || t('common.viewDetails')
+})
 
 const iconColor = computed(() => props.color || 'currentColor')
 </script>

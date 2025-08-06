@@ -498,14 +498,14 @@ onMounted(() => {
 
 .page-title {
       font-size: clamp(2.5rem, 5vw, 3.5rem);
-      font-weight: 800;
+      font-weight: 700;
       margin-bottom: 1.5rem;
       line-height: 1.2;
 
       .title-gradient {
         color: var(--primary-color);
   position: relative;
-        font-weight: 800;
+        font-weight: 700;
 
         .dark-mode & {
           color: #4fd1c7;
@@ -597,7 +597,7 @@ onMounted(() => {
 
           .stat-number {
             font-size: 2.5rem;
-            font-weight: 800;
+            font-weight: 700;
             color: var(--primary-color);
             margin-bottom: 0.5rem;
             line-height: 1;
@@ -702,7 +702,7 @@ onMounted(() => {
         align-items: center;
         gap: 1rem;
         font-size: 2.8rem;
-        font-weight: 900;
+        font-weight: 700;
         color: var(--dark-text);
         position: relative;
         margin-bottom: 0.5rem;
@@ -728,7 +728,7 @@ onMounted(() => {
           -webkit-text-fill-color: transparent;
           background-clip: text;
           position: relative;
-          font-weight: 900;
+          font-weight: 700;
           letter-spacing: -0.02em;
           text-shadow: 0 4px 8px rgba(14, 165, 233, 0.1);
 

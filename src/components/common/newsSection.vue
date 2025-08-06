@@ -361,7 +361,7 @@ defineExpose({
 
     .day {
       font-size: 1.6rem;
-      font-weight: 800;
+      font-weight: 700;
       line-height: 1;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }

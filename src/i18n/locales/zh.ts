@@ -18,10 +18,47 @@ export default {
     notFoundText: '您查找的页面可能已被移除、更名或暂时不可用。',
     backToHome: '返回首页'
   },
+  titles: {
+    home: '首页',
+    about: '简介',
+    members: '成员',
+    userDetail: '成员详情',
+    research: '科研成果',
+    papersList: '学术论文',
+    paperDetail: '论文详情',
+    patentsList: '专利成果',
+    patentDetail: '专利详情',
+    booksList: '学术著作',
+    bookDetail: '著作详情',
+    news: '最新动态',
+    dynamicDetail: '动态详情',
+    facilities: '科研条件',
+    instrumentDetail: '仪器详情',
+    notices: '通知公告',
+    noticeDetail: '通知详情',
+    tools: '开源工具',
+    join: '加入我们',
+    '404': '页面未找到'
+  },
   common: {
+    loading: '加载中...',
     noData: '暂无数据',
     loadError: '加载失败',
-    retry: '重试'
+    retry: '重试',
+    viewMore: '查看更多',
+    viewDetails: '查看详情',
+    month1: '1月',
+    month2: '2月',
+    month3: '3月',
+    month4: '4月',
+    month5: '5月',
+    month6: '6月',
+    month7: '7月',
+    month8: '8月',
+    month9: '9月',
+    month10: '10月',
+    month11: '11月',
+    month12: '12月'
   },
   nav: {
     home: '首页',
@@ -30,6 +67,7 @@ export default {
     research: '科研成果',
     news: '动态',
     facilities: '科研条件',
+    tools: '开源工具',
     join: '加入我们'
   },
   home: {
@@ -38,6 +76,7 @@ export default {
     exploreBtn: '探索我们的研究',
     contactBtn: '联系我们',
     featuredResearch: '科研突破',
+    researchAchievements: '科研成果',
     latestNews: '最新动态',
     partners: '合作伙伴',
     teamIntro: '团队简介',
@@ -81,7 +120,10 @@ export default {
     academicResearch: '学术研究',
     publications: '论文发表',
     userNotFound: '用户信息未找到',
-    userNotFoundDesc: '该用户信息不存在或已被删除'
+    userNotFoundDesc: '该用户信息不存在或已被删除',
+    userDetail: '成员详情',
+    noDetailInfo: '暂无其它信息',
+    noDetailInfoDesc: '该成员暂未填写详细信息'
   },
   news: {
     title: '最新动态',
@@ -173,6 +215,20 @@ export default {
     contentPlaceholder: '通知详情',
     contentPlaceholderDesc: '暂无详细内容信息。'
   },
+  tools: {
+    title: '开源工具',
+    subtitle: '探索我们开发的开源软件工具，加速科研创新',
+    titlePlaceholder: '搜索工具名称...',
+    totalTools: '总工具数',
+    toolType: '工具类型',
+    publishTime: '发布时间',
+    allTypes: '全部类型',
+    noTools: '暂无工具',
+    noToolsDesc: '目前没有发布工具信息，请稍后再试',
+    fetchError: '获取工具列表失败',
+    visitTool: '访问工具',
+    toolUrl: '工具地址'
+  },
   join: {
     title: '加入我们',
     subtitle: '携手优秀科研团队，共创生物科技未来',
@@ -211,8 +267,11 @@ export default {
     subtitle: '展示我们在合成生物学领域的最新研究成果与学术贡献',
     overview: '成果概览',
     papers: '学术论文',
+    paper: '论文',
     patents: '专利成果',
+    patent: '专利',
     books: '学术著作',
+    book: '著作',
     viewMore: '查看更多',
     viewAll: '查看全部',
     publishedAt: '发表时间',

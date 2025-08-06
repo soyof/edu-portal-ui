@@ -11,7 +11,6 @@
           <h1 class="page-title">
             <span class="title-icon">🚀</span>
             <span class="title-text">{{ $t('join.title') }}</span>
-            <div class="title-glow"></div>
           </h1>
           <p class="hero-subtitle">{{ $t('join.subtitle', '携手顶尖科研团队，共创生物科技未来') }}</p>
 
@@ -349,7 +348,7 @@ onMounted(() => {
   }
 
   .page-title {
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
     margin-bottom: 1.5rem;
     font-weight: 700;
     color: var(--primary-color);
@@ -365,18 +364,6 @@ onMounted(() => {
 
     .title-text {
       position: relative;
-    }
-
-    .title-glow {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle, var(--primary-color) 0%, var(--accent-color) 100%);
-      filter: blur(25px);
-      opacity: 0.3;
-      z-index: -1;
     }
   }
 

@@ -8,18 +8,19 @@
       </div>
       <div class="container">
         <div class="user-hero-content">
-          <!-- 返回按钮 -->
-          <button class="back-btn" @click="goBack">
-            <i class="icon-back">
-              <svg width="20" height="20" viewBox="0 0 24 24"
-                fill="none" xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round"
-                />
-              </svg>
-            </i>
-          </button>
+          <!-- 面包屑导航 -->
+          <nav class="breadcrumb-nav">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <router-link to="/members" class="breadcrumb-link">
+                  {{ $t('nav.members') }}
+                </router-link>
+              </li>
+              <li class="breadcrumb-item active">
+                {{ $t('members.userDetail', '成员详情') }}
+              </li>
+            </ol>
+          </nav>
 
           <!-- 用户主要信息 -->
           <div v-if="!loading && userDetail" class="user-main-info">
@@ -106,7 +107,8 @@
 
         <!-- 用户详细信息 -->
         <div v-else-if="userDetail" class="user-detail-content">
-          <div class="detail-grid">
+          <!-- 有详细内容时显示 -->
+          <div v-if="hasDetailContent" class="detail-grid">
             <!-- 个人简介 -->
             <div v-if="userDetail.bio || userDetail.bioEn" class="detail-card">
               <div class="card-header">
@@ -205,6 +207,22 @@
               </div>
             </div>
           </div>
+
+          <!-- 没有详细内容时显示空状态 -->
+          <div v-else class="empty-content-state">
+            <div class="empty-content-animation">
+              <div class="floating-molecules">
+                <div class="molecule"></div>
+                <div class="molecule"></div>
+                <div class="molecule"></div>
+              </div>
+              <div class="empty-icon">
+                <div class="icon-pulse">📄</div>
+              </div>
+            </div>
+            <h3 class="empty-title">{{ $t('members.noDetailInfo', '暂无其它信息') }}</h3>
+            <p class="empty-text">{{ $t('members.noDetailInfoDesc', '该成员暂未填写详细信息') }}</p>
+          </div>
         </div>
 
         <!-- 错误状态 -->
@@ -290,6 +308,28 @@ const { setData: setUserData } = useMultiLang<UserDetail>()
 
 // 获取用户ID
 const userId = computed(() => route.params.userId as string)
+
+// 检查是否有详细内容
+const hasDetailContent = computed(() => {
+  if (!userDetail.value) return false
+
+  return !!(
+    userDetail.value.bio ||
+    userDetail.value.bioEn ||
+    userDetail.value.researchDirection ||
+    userDetail.value.researchDirectionEn ||
+    userDetail.value.researchProject ||
+    userDetail.value.researchProjectEn ||
+    userDetail.value.academicAppointment ||
+    userDetail.value.academicAppointmentEn ||
+    userDetail.value.awards ||
+    userDetail.value.awardsEn ||
+    userDetail.value.academicResearch ||
+    userDetail.value.academicResearchEn ||
+    userDetail.value.publications ||
+    userDetail.value.publicationsEn
+  )
+})
 
 // 获取用户详情
 const getUserDetail = async() => {
@@ -438,41 +478,60 @@ onMounted(() => {
     z-index: 2;
   }
 
-  .back-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    color: var(--text-color);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    margin-bottom: 1.5rem;
-    cursor: pointer;
+  // 面包屑导航
+  .breadcrumb-nav {
+    margin-bottom: 2rem;
 
-    &:hover {
-      background: rgba(255, 255, 255, 0.15);
-      transform: translateX(-5px) scale(1.1);
-      box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.3);
-      border-color: rgba(var(--primary-color-rgb), 0.3);
-    }
-
-    .icon-back {
+    .breadcrumb {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.9rem;
 
-      svg {
-        transition: all 0.3s ease;
+      .breadcrumb-item {
+        display: flex;
+        align-items: center;
+
+        &:not(:last-child)::after {
+          content: '>';
+          margin: 0 0.75rem;
+          color: var(--text-color-secondary);
+          font-weight: 500;
+        }
+
+        .breadcrumb-link {
+          color: var(--primary-color);
+          text-decoration: none;
+          font-weight: 500;
+          transition: all 0.3s ease;
+          padding: 0.25rem 0.5rem;
+          border-radius: 0.375rem;
+
+          .dark-mode & {
+            color: #4fd1c7;
+          }
+
+          &:hover {
+            background: rgba(var(--primary-color-rgb), 0.1);
+            color: var(--accent-color);
+
+            .dark-mode & {
+              background: rgba(77, 209, 199, 0.1);
+              color: var(--tech-accent);
+            }
+          }
+        }
+
+        &.active {
+          color: var(--text-color-secondary);
+          font-weight: 500;
+
+          .dark-mode & {
+            color: #94a3b8;
+          }
+        }
       }
-    }
-
-    &:hover .icon-back svg {
-      transform: translateX(-2px);
     }
   }
 
@@ -604,7 +663,7 @@ onMounted(() => {
 
     .user-name {
       font-size: clamp(2.5rem, 4vw, 3.5rem);
-      margin-bottom: 1rem;
+      margin-bottom: 0.3rem;
       font-weight: 700;
       position: relative;
       display: inline-block;
@@ -637,23 +696,71 @@ onMounted(() => {
     }
 
     .user-title {
-      font-size: 1.3rem;
-      color: var(--primary-color);
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      padding: 0.5rem 1rem;
-      background: rgba(var(--primary-color-rgb), 0.1);
-      border-radius: 25px;
+      font-size: 0.9rem;
+      color: white;
+      font-weight: 500;
+      margin-left: 0.5rem;
+      margin-top: 0.8rem;
+      margin-bottom: -0.5rem;
+      padding: 0.6rem 1.5rem;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      border-radius: 30px;
       display: inline-block;
-      border: 1px solid rgba(var(--primary-color-rgb), 0.2);
-      backdrop-filter: blur(10px);
+      border: none;
+      backdrop-filter: blur(15px);
+      box-shadow:
+        0 4px 20px rgba(var(--primary-color-rgb), 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.5px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent);
+        transition: left 0.6s ease;
+      }
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow:
+          0 6px 25px rgba(var(--primary-color-rgb), 0.4),
+          0 3px 12px rgba(0, 0, 0, 0.15);
+
+        &::before {
+          left: 100%;
+        }
+      }
+
+      // 暗色模式优化
+      .dark-mode & {
+        background: linear-gradient(135deg, #4fd1c7, #06b6d4);
+        box-shadow:
+          0 4px 20px rgba(79, 209, 199, 0.3),
+          0 2px 8px rgba(0, 0, 0, 0.2);
+
+        &:hover {
+          box-shadow:
+            0 6px 25px rgba(79, 209, 199, 0.4),
+            0 3px 12px rgba(0, 0, 0, 0.25);
+        }
+      }
     }
 
     .user-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 0.8rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
 
       .tag {
         padding: 0.5rem 1rem;
@@ -877,6 +984,84 @@ onMounted(() => {
       line-height: 1.8;
       font-size: 1rem;
     }
+  }
+}
+
+// 空内容状态
+.empty-content-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 0;
+  text-align: center;
+  position: relative;
+
+  .empty-content-animation {
+    position: relative;
+    margin-bottom: 3rem;
+
+    .floating-molecules {
+      position: absolute;
+      top: -40px;
+      left: -40px;
+      right: -40px;
+      bottom: -40px;
+
+      .molecule {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: var(--primary-color);
+        border-radius: 50%;
+        animation: moleculeFloat 4s ease-in-out infinite;
+        box-shadow: 0 0 10px rgba(var(--primary-color-rgb), 0.5);
+
+        &:nth-child(1) {
+          top: 20%;
+          left: 10%;
+          animation-delay: 0s;
+        }
+
+        &:nth-child(2) {
+          top: 60%;
+          right: 15%;
+          animation-delay: -1.3s;
+        }
+
+        &:nth-child(3) {
+          bottom: 30%;
+          left: 50%;
+          animation-delay: -2.6s;
+        }
+      }
+    }
+
+    .empty-icon {
+      position: relative;
+      z-index: 2;
+
+      .icon-pulse {
+        font-size: 4rem;
+        animation: iconPulse 3s ease-in-out infinite;
+        filter: drop-shadow(0 0 20px rgba(var(--primary-color-rgb), 0.3));
+      }
+    }
+  }
+
+  .empty-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    font-weight: 700;
+  }
+
+  .empty-text {
+    color: var(--text-color-secondary);
+    margin-bottom: 3rem;
+    max-width: 400px;
+    line-height: 1.6;
+    font-size: 1.1rem;
   }
 }
 
@@ -1163,17 +1348,6 @@ onMounted(() => {
 @media (max-width: 480px) {
   .hero-section {
     padding: 50px 0 25px;
-  }
-
-  .back-btn {
-    width: 42px;
-    height: 42px;
-    margin-bottom: 1rem;
-
-    .icon-back svg {
-      width: 18px;
-      height: 18px;
-    }
   }
 
   .user-avatar-section {

@@ -18,10 +18,47 @@ export default {
     notFoundText: 'The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.',
     backToHome: 'Back to Home'
   },
+  titles: {
+    home: 'Home',
+    about: 'About',
+    members: 'Members',
+    userDetail: 'Member Details',
+    research: 'Research',
+    papersList: 'Academic Papers',
+    paperDetail: 'Paper Details',
+    patentsList: 'Patent Achievements',
+    patentDetail: 'Patent Details',
+    booksList: 'Academic Publications',
+    bookDetail: 'Book Details',
+    news: 'News',
+    dynamicDetail: 'News Details',
+    facilities: 'Facilities',
+    instrumentDetail: 'Instrument Details',
+    notices: 'Notices',
+    noticeDetail: 'Notice Details',
+    tools: 'Tools',
+    join: 'Join Us',
+    '404': 'Page Not Found'
+  },
   common: {
+    loading: 'Loading...',
     noData: 'No data available',
     loadError: 'Failed to load',
-    retry: 'Retry'
+    retry: 'Retry',
+    viewMore: 'View More',
+    viewDetails: 'View Details',
+    month1: 'January',
+    month2: 'February',
+    month3: 'March',
+    month4: 'April',
+    month5: 'May',
+    month6: 'June',
+    month7: 'July',
+    month8: 'August',
+    month9: 'September',
+    month10: 'October',
+    month11: 'November',
+    month12: 'December'
   },
   nav: {
     home: 'Home',
@@ -30,6 +67,7 @@ export default {
     research: 'Research',
     news: 'News',
     facilities: 'Facilities',
+    tools: 'Tools',
     join: 'Join Us'
   },
   home: {
@@ -38,6 +76,7 @@ export default {
     exploreBtn: 'Explore Our Research',
     contactBtn: 'Contact Us',
     featuredResearch: 'Featured Research',
+    researchAchievements: 'Research Achievements',
     latestNews: 'Latest News',
     partners: 'Our Partners',
     teamIntro: 'Team Introduction',
@@ -81,7 +120,10 @@ export default {
     academicResearch: 'Academic Research',
     publications: 'Publications',
     userNotFound: 'User Not Found',
-    userNotFoundDesc: 'The user information does not exist or has been deleted'
+    userNotFoundDesc: 'The user information does not exist or has been deleted',
+    userDetail: 'Member Details',
+    noDetailInfo: 'No Additional Information',
+    noDetailInfoDesc: 'This member has not provided detailed information yet'
   },
   news: {
     title: 'News & Events',
@@ -173,6 +215,20 @@ export default {
     contentPlaceholder: 'Notice Content',
     contentPlaceholderDesc: 'No detailed information is available.'
   },
+  tools: {
+    title: 'Open Source Tools',
+    subtitle: 'Explore our open source software tools to accelerate scientific research and innovation',
+    titlePlaceholder: 'Search tool name...',
+    totalTools: 'Total Tools',
+    toolType: 'Tool Type',
+    publishTime: 'Published Time',
+    allTypes: 'All Types',
+    noTools: 'No tools available',
+    noToolsDesc: 'No tool information is currently published, please try again later',
+    fetchError: 'Failed to fetch tools list',
+    visitTool: 'Visit Tool',
+    toolUrl: 'Tool URL'
+  },
   join: {
     title: 'Join Our Team',
     subtitle: 'Partner with excellent research teams to create the future of biotechnology',
@@ -211,8 +267,11 @@ export default {
     subtitle: 'Showcasing our latest research outcomes and academic contributions in synthetic biology',
     overview: 'Overview',
     papers: 'Academic Papers',
+    paper: 'Paper',
     patents: 'Patent Achievements',
+    patent: 'Patent',
     books: 'Academic Publications',
+    book: 'Book',
     viewMore: 'View More',
     viewAll: 'View All',
     publishedAt: 'Published',

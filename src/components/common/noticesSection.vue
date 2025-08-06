@@ -126,7 +126,7 @@ const fetchAnnouncements = () => {
   // 使用 service 调用通知接口，获取前5条
   service.post<PaginationResult<NoticeListResponse>>('/api/notices/list', {
     pageNo: 1,
-    pageSize: 5
+    pageSize: 6
   })
     .then(response => {
       const data = response as any as PaginationResult<NoticeListResponse>

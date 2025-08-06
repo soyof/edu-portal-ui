@@ -58,7 +58,7 @@
                 :placeholder="$t('research.selectYear')"
                 clearable
                 class="year-select"
-                @change="() => handleDateChange(handleSearch)"
+                @change="handleDateChange"
               >
                 <el-option
                   v-for="year in availableYears"
@@ -75,7 +75,7 @@
                 :placeholder="$t('research.selectMonth')"
                 clearable
                 class="month-select"
-                @change="() => handleDateChange(handleSearch)"
+                @change="handleDateChange"
               >
                 <el-option
                   v-for="month in availableMonths"
@@ -174,11 +174,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import service from '@/utils/services'
 import { useResearchSearch, useLanguageText, type BaseSearchFilters } from '@/hooks/useResearchSearch'
+import { useDateFilterWithSearch } from '@/hooks/useDateFilter'
 import CommonPagination from '@/components/common/commonPagination.vue'
 
 // 接口类型定义
@@ -216,15 +217,17 @@ const router = useRouter()
 // 使用公共搜索钩子
 const {
   searchFilters,
-  selectedYear,
-  selectedMonth,
-  availableYears,
-  availableMonths,
   generateCacheKey,
   isCacheValid,
-  handleTitleInput,
-  handleDateChange
+  handleTitleInput
 } = useResearchSearch<BaseSearchFilters>()
+
+// 使用日期筛选hooks
+const dateFilter = useDateFilterWithSearch(() => handleSearch(), {
+  yearRange: 10,
+  enableMonth: true
+})
+const { selectedYear, selectedMonth, availableYears, availableMonths, handleDateChange } = dateFilter
 
 // 使用公共多语言文本钩子
 const { getCurrentLanguageText, formatDate } = useLanguageText()
@@ -240,13 +243,13 @@ const pageSize = ref(15)
 // 缓存相关
 const cache = new Map<string, { data: BookResponse[], total: number, timestamp: number }>()
 
-// 计算属性
-const totalPages = computed(() => Math.ceil(total.value / pageSize.value))
+// 计算属性已移除totalPages，因为未使用
 
 // 获取著作列表
 const fetchBooks = async(page = 1, filters: BaseSearchFilters = {}) => {
   try {
-    const cacheKey = generateCacheKey(page, filters)
+    const dateParams = dateFilter.getDateFilterParams()
+    const cacheKey = generateCacheKey(page, filters, dateParams)
     const cachedData = cache.get(cacheKey)
 
     // 检查缓存
@@ -261,7 +264,8 @@ const fetchBooks = async(page = 1, filters: BaseSearchFilters = {}) => {
     const requestData = {
       pageNo: page,
       pageSize: pageSize.value,
-      ...filters
+      ...filters,
+      ...dateParams
     }
 
     const response = await service.post<PaginationResult<BookResponse>>('/api/research/booksList', requestData)
@@ -466,8 +470,8 @@ onMounted(() => {
   }
 
   .page-title {
-    font-size: 3.5rem;
-    font-weight: 800;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
     margin-bottom: 1.5rem;
     background: linear-gradient(135deg,
       var(--tech-primary) 0%,

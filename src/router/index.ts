@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import i18n from '../i18n'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -109,6 +110,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: 'noticeDetail' }
   },
   {
+    path: '/tools',
+    name: 'Tools',
+    component: () => import('../views/tools/tools.vue'),
+    meta: { title: 'tools' }
+  },
+  {
     path: '/join',
     name: 'Join',
     component: () => import('../views/join/join.vue'),
@@ -130,13 +137,31 @@ const router = createRouter({
   }
 })
 
+// 更新页面标题的函数
+const updatePageTitle = (titleKey?: string) => {
+  if (titleKey) {
+    const t = i18n.global.t
+    const pageTitle = t(`titles.${titleKey}`)
+    const siteTitle = t('global.title')
+    document.title = `${pageTitle} - ${siteTitle}`
+  }
+}
+
 // 路由前置守卫，用于修改页面标题
 router.beforeEach((to, from, next) => {
-  // 设置标题
-  if (to.meta.title) {
-    document.title = `${to.meta.title} - Synthetic Biology Research Institute`
-  }
+  // 设置国际化标题
+  updatePageTitle(to.meta.title as string)
   next()
 })
+
+// 监听语言变化，更新当前页面标题
+if (typeof window !== 'undefined') {
+  window.addEventListener('localeChange', () => {
+    const currentRoute = router.currentRoute.value
+    if (currentRoute.meta.title) {
+      updatePageTitle(currentRoute.meta.title as string)
+    }
+  })
+}
 
 export default router

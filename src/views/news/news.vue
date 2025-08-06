@@ -71,11 +71,11 @@
 
             <div class="filter-item date-filters">
               <el-select
-                v-model="searchFilters.publishYear"
+                v-model="selectedYear"
                 :placeholder="$t('research.selectYear')"
                 clearable
                 class="year-select"
-                @change="handleSearch"
+                @change="handleDateChange"
               >
                 <el-option
                   v-for="year in availableYears"
@@ -88,11 +88,11 @@
 
             <div class="filter-item date-filters">
               <el-select
-                v-model="searchFilters.publishMonth"
+                v-model="selectedMonth"
                 :placeholder="$t('research.selectMonth')"
                 clearable
                 class="month-select"
-                @change="handleSearch"
+                @change="handleDateChange"
               >
                 <el-option
                   v-for="month in availableMonths"
@@ -163,6 +163,7 @@ import { useRouter } from 'vue-router'
 import { Search, Loading, Document } from '@element-plus/icons-vue'
 import { useI18n } from 'vue-i18n'
 import { useLanguageText } from '@/hooks/useResearchSearch'
+import { useDateFilterWithSearch } from '@/hooks/useDateFilter'
 import CommonPagination from '@/components/common/commonPagination.vue'
 
 import service from '../../utils/services'
@@ -245,15 +246,12 @@ const searchFilters = ref<Omit<DynamicQueryParams, 'pageNo' | 'pageSize'>>({
   publishMonth: undefined
 })
 
-// 年份选项（最近10年）
-const currentYear = new Date().getFullYear()
-const availableYears = Array.from({ length: 10 }, (_, i) => currentYear - i)
-
-// 月份选项
-const availableMonths = Array.from({ length: 12 }, (_, i) => ({
-  value: i + 1,
-  label: `${i + 1}月`
-}))
+// 使用日期筛选hooks
+const dateFilter = useDateFilterWithSearch(() => handleSearch(), {
+  yearRange: 10,
+  enableMonth: true
+})
+const { availableYears, availableMonths, selectedYear, selectedMonth, handleDateChange } = dateFilter
 
 // 获取动态类型字典
 const fetchDynamicTypes = () => {
@@ -284,12 +282,10 @@ const fetchDynamics = (page: number = 1, filters?: Omit<DynamicQueryParams, 'pag
   if (filters?.dynamicType) {
     params.dynamicType = filters.dynamicType
   }
-  if (filters?.publishYear) {
-    params.publishYear = filters.publishYear
-  }
-  if (filters?.publishMonth) {
-    params.publishMonth = filters.publishMonth
-  }
+
+  // 合并日期筛选参数
+  const dateParams = dateFilter.getDateFilterParams()
+  Object.assign(params, dateParams)
 
   return service.post('/api/dynamic/list', { ...params })
     .then((result: any) => {
@@ -492,8 +488,8 @@ onMounted(() => {
   }
 
   .page-title {
-    font-size: 3.2rem;
-    font-weight: 900;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
     margin-bottom: 30px;
     position: relative;
     display: inline-block;

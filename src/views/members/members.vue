@@ -378,7 +378,7 @@ onMounted(() => {
   }
 
   .page-title {
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
     margin-bottom: 1.5rem;
     font-weight: 700;
     color: var(--primary-color);
@@ -1441,13 +1441,27 @@ onMounted(() => {
 
     .group-header .group-title {
       font-size: 1.8rem;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
 
       .title-marker {
         width: 4px;
         height: 30px;
+        flex-shrink: 0;
+      }
+
+      .title-text {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .member-count {
+        min-width: 2rem;
+        height: 2rem;
+        font-size: 0.9rem;
+        flex-shrink: 0;
       }
     }
   }
@@ -1508,6 +1522,24 @@ onMounted(() => {
       .tag {
         font-size: 0.7rem;
         padding: 0.3rem 0.6rem;
+      }
+    }
+  }
+
+  .title-group {
+    .group-header .group-title {
+      font-size: 1.6rem;
+      gap: 0.6rem;
+
+      .title-marker {
+        width: 3px;
+        height: 25px;
+      }
+
+      .member-count {
+        min-width: 1.8rem;
+        height: 1.8rem;
+        font-size: 0.8rem;
       }
     }
   }

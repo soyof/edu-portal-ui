@@ -317,7 +317,7 @@ onMounted(() => {
         margin: 0;
 
         .title-text {
-          font-size: clamp(2.5rem, 6vw, 4.5rem);
+          font-size: clamp(2.5rem, 5vw, 3.5rem);
           font-weight: 700;
           color: var(--primary-color);
           position: relative;

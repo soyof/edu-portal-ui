@@ -39,6 +39,9 @@
     <!-- 团队简介区域 -->
     <TeamIntroSection ref="teamIntroRef" />
 
+    <!-- 科研成果区域 -->
+    <ResearchSection ref="researchRef" />
+
     <!-- 公告通知区域 -->
     <NoticesSection ref="noticesRef" />
 
@@ -57,6 +60,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import NoticesSection from '../../components/common/noticesSection.vue'
 import NewsSection from '../../components/common/newsSection.vue'
 import TeamIntroSection from '../../components/common/teamIntroSection.vue'
+import ResearchSection from '../../components/common/researchSection.vue'
 import { useThemeStore } from '../../store'
 
 // 注册GSAP插件
@@ -83,6 +87,7 @@ const dnaModel = ref<HTMLElement | null>(null)
 
 // 子组件引用
 const teamIntroRef = ref()
+const researchRef = ref()
 const noticesRef = ref()
 const newsRef = ref()
 
