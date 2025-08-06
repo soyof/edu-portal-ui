@@ -132,7 +132,6 @@ const fetchAnnouncements = () => {
       const data = response as any as PaginationResult<NoticeListResponse>
       const notices = data.list || []
       announcements.value = notices.map(convertNoticeToAnnouncement)
-      console.log(announcements.value)
     })
     .finally(() => {
       loadingAnnouncements.value = false

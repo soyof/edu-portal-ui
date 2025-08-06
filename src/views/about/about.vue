@@ -190,7 +190,6 @@ const fetchProfileData = () => {
     // 设置多语言数据处理
     if (res) {
       setData(res)
-      console.log('处理后的多语言数据:', multiLangData.value)
     }
   }).finally(() => {
     loading.value = false

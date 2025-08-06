@@ -184,28 +184,37 @@ class Services {
           this.retryCount.delete(requestKey)
         }
 
-        // 处理HTTP错误状态码
-        if (error.response) {
-          const status = error.response.status
-          switch (status) {
-            case 401:
-              break
-            case 403:
-              errorFn('没有权限访问该资源')
-              break
-            case 404:
-              errorFn('请求的资源不存在')
-              break
-            case 500:
-              errorFn('服务器内部错误')
-              break
-            default:
-              errorFn(`请求失败，状态码：${status}`)
+        // 检查是否需要跳过错误提示
+        const skipErrorMessage = config?.skipErrorMessage || false
+        const url = config?.url || ''
+
+        // 对于埋点相关接口或明确标记跳过错误的请求，不显示错误提示
+        const isAnalyticsApi = url.includes('/api/log')
+
+        if (!skipErrorMessage && !isAnalyticsApi) {
+          // 处理HTTP错误状态码
+          if (error.response) {
+            const status = error.response.status
+            switch (status) {
+              case 401:
+                break
+              case 403:
+                errorFn('没有权限访问该资源')
+                break
+              case 404:
+                errorFn('请求的资源不存在')
+                break
+              case 500:
+                errorFn('服务器内部错误')
+                break
+              default:
+                errorFn(`请求失败，状态码：${status}`)
+            }
+          } else if (error.request) {
+            errorFn('网络异常，请检查您的网络连接')
+          } else {
+            errorFn(`请求配置错误: ${error.message || '未知错误'}`)
           }
-        } else if (error.request) {
-          errorFn('网络异常，请检查您的网络连接')
-        } else {
-          errorFn(`请求配置错误: ${error.message || '未知错误'}`)
         }
 
         return Promise.reject(error)

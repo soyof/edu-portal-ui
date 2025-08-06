@@ -82,7 +82,6 @@ const fetchTeamProfile = () => {
     profileType: '5003'
   })
     .then((result: any) => {
-      console.log(result)
       profile.value = result || {}
     })
     .finally(() => {
