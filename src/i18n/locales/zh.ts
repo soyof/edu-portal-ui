@@ -1,7 +1,7 @@
 export default {
   global: {
-    title: '合成生物研究所',
-    titleShort: '合成生物所',
+    title: '合成生物学研究所',
+    titleShort: '合成生物学研究所',
     theme: {
       light: '明亮模式',
       dark: '暗黑模式'
@@ -71,7 +71,7 @@ export default {
     join: '加入我们'
   },
   home: {
-    welcome: '欢迎来到合成生物研究所',
+    welcome: '欢迎来到合成生物学研究所',
     subtitle: '引领生物科技的明天',
     exploreBtn: '探索我们的研究',
     contactBtn: '联系我们',
@@ -256,7 +256,7 @@ export default {
     emailPlaceholder: '请输入您的邮箱地址',
     subscribeBtn: '订阅',
     followUs: '关注我们',
-    copyright: `©2025 ~ ${new Date().getFullYear()} 东北大学合成生物研究所 版权所有`,
+    copyright: `©2025 ~ ${new Date().getFullYear()} 东北大学合成生物学研究所 版权所有`,
     privacyPolicy: '隐私政策',
     termsOfUse: '使用条款',
     accessibility: '无障碍访问'

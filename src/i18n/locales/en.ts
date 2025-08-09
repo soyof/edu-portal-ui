@@ -1,7 +1,7 @@
 export default {
   global: {
-    title: 'Synthetic Biology Research Institute',
-    titleShort: 'SBRI',
+    title: 'Synthetic Biology Institute',
+    titleShort: 'SBI',
     theme: {
       light: 'Light Mode',
       dark: 'Dark Mode'
